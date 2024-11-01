@@ -1,14 +1,23 @@
-// content.js
 const SELECTORS = {
-  homeFeed: '.feed-shared-update-v2',
-  promotedPosts: 'div[class*="feed-shared-update-v2"]:has(span:contains("Promoted"))',
-  connectionSuggestions: 'div[class*="feed-shared-update-v2"]:has(span:contains("Suggested"))',
-  jobSuggestions: 'div[class*="feed-shared-update-v2"]:has(span:contains("Jobs"))',
+  homeFeed: `
+    .feed-shared-update-v2,
+    .scaffold-finite-scroll__content,
+    button[class*="artdeco-button--secondary"][class*="scaffold-finite-scroll"],
+    div[class*="sort-dropdown"],
+    div[class="display-flex p5"],
+    button[class*="artdeco-dropdown__trigger"],
+    .feed-shared-update-v2__description-wrapper,
+    .artdeco-dropdown__trigger--placement-bottom,
+    .feed-index-sort-border,
+    button[aria-expanded][id^="ember"][class*="artdeco-dropdown__trigger"],
+    .artdeco-dropdown.mb2[id^="ember"],
+    div[class="artdeco-dropdown artdeco-dropdown--placement-bottom artdeco-dropdown--justification-right ember-view"],
+    button[class*="artdeco-dropdown__trigger"][class*="full-width"][class*="display-flex"]
+  `,  // Added specific selectors for sort by dropdown and new post button
   rightSidebar: '.scaffold-layout__aside',
+  leftSidebar: '.scaffold-layout__sidebar, .profile-rail-card',  // Only hide sidebar content, not nav
   engagementSection: '.social-details-social-counts',
   adBanners: '.ad-banner-container',
-  networkPanel: '.mn-discovery-cohort',
-  premiumUpsell: '.premium-upsell-link',
   notificationCount: '.notification-badge',
   messagingSection: '.msg-overlay-list-bubble'
 };
@@ -20,7 +29,9 @@ let observers = new Map();
 function hideElements(selector) {
   const elements = document.querySelectorAll(selector);
   elements.forEach(element => {
-    element.style.display = 'none';
+    if (element) {
+      element.style.display = 'none';
+    }
   });
 }
 
@@ -28,13 +39,14 @@ function hideElements(selector) {
 function showElements(selector) {
   const elements = document.querySelectorAll(selector);
   elements.forEach(element => {
-    element.style.display = '';
+    if (element) {
+      element.style.display = '';
+    }
   });
 }
 
 // Function to start observing changes for a specific feature
 function startObserving(featureType) {
-  // Stop existing observer if any
   stopObserving(featureType);
 
   const targetNode = document.body;
@@ -74,11 +86,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       showElements(SELECTORS[elementType]);
     }
   } else if (request.type === 'resetAll') {
-    // Stop all observers
     observers.forEach((observer, type) => {
       stopObserving(type);
     });
-    // Show all elements
     Object.values(SELECTORS).forEach(selector => {
       showElements(selector);
     });
