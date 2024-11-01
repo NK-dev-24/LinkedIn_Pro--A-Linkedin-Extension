@@ -1,4 +1,3 @@
-// content.js
 const SELECTORS = {
   homeFeed: `
     .feed-shared-update-v2,
@@ -6,9 +5,15 @@ const SELECTORS = {
     button[class*="artdeco-button--secondary"][class*="scaffold-finite-scroll"],
     div[class*="sort-dropdown"],
     div[class="display-flex p5"],
-    div[class="display-flex t-black"],
-    .feed-shared-update-v2__description-wrapper
-  `,  // Updated to catch all feed elements including sort and show more
+    button[class*="artdeco-dropdown__trigger"],
+    .feed-shared-update-v2__description-wrapper,
+    .artdeco-dropdown__trigger--placement-bottom,
+    .feed-index-sort-border,
+    button[aria-expanded][id^="ember"][class*="artdeco-dropdown__trigger"],
+    .artdeco-dropdown.mb2[id^="ember"],
+    div[class="artdeco-dropdown artdeco-dropdown--placement-bottom artdeco-dropdown--justification-right ember-view"],
+    button[class*="artdeco-dropdown__trigger"][class*="full-width"][class*="display-flex"]
+  `,  // Added specific selectors for sort by dropdown and new post button
   rightSidebar: '.scaffold-layout__aside',
   leftSidebar: '.scaffold-layout__sidebar, .profile-rail-card',  // Only hide sidebar content, not nav
   engagementSection: '.social-details-social-counts',
