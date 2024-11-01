@@ -1,6 +1,14 @@
 // content.js
 const SELECTORS = {
-  homeFeed: '.feed-shared-update-v2, div[class*="sort-dropdown"], div[class*="show-more"], .feed-shared-update-v2__description-wrapper',  // Updated to catch all feed elements
+  homeFeed: `
+    .feed-shared-update-v2,
+    .scaffold-finite-scroll__content,
+    button[class*="artdeco-button--secondary"][class*="scaffold-finite-scroll"],
+    div[class*="sort-dropdown"],
+    div[class="display-flex p5"],
+    div[class="display-flex t-black"],
+    .feed-shared-update-v2__description-wrapper
+  `,  // Updated to catch all feed elements including sort and show more
   rightSidebar: '.scaffold-layout__aside',
   leftSidebar: '.scaffold-layout__sidebar, .profile-rail-card',  // Only hide sidebar content, not nav
   engagementSection: '.social-details-social-counts',
