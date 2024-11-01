@@ -13,13 +13,14 @@ const SELECTORS = {
     .artdeco-dropdown.mb2[id^="ember"],
     div[class="artdeco-dropdown artdeco-dropdown--placement-bottom artdeco-dropdown--justification-right ember-view"],
     button[class*="artdeco-dropdown__trigger"][class*="full-width"][class*="display-flex"]
-  `,  
+  `,
   rightSidebar: '.scaffold-layout__aside',
-  leftSidebar: '.scaffold-layout__sidebar, .profile-rail-card',  
+  leftSidebar: '.scaffold-layout__sidebar, .profile-rail-card',
   engagementSection: '.social-details-social-counts',
   adBanners: '.ad-banner-container',
   notificationCount: '.notification-badge',
   messagingSection: '.msg-overlay-list-bubble',
+  globalNav: '#global-nav',
   zenModeExclude: `
     .share-box-feed-entry__content, 
     .ql-editor,
@@ -89,11 +90,14 @@ function stopObserving(featureType) {
 function applyZenMode() {
   // Hide everything except post writer
   const excludeSelectors = Object.keys(SELECTORS)
-    .filter(key => key !== 'zenModeExclude')
+    .filter(key => key !== 'zenModeExclude' && key !== 'globalNav')
     .map(key => SELECTORS[key])
     .join(', ');
 
   hideElements(excludeSelectors);
+
+  // Hide the global navigation bar
+  hideElements(SELECTORS.globalNav);
 
   // Highlight post writer with orange border
   const postWriterElements = document.querySelectorAll(SELECTORS.zenModeExclude);
@@ -120,10 +124,13 @@ function applyZenMode() {
 function removeZenMode() {
   // Restore visibility of all elements
   Object.keys(SELECTORS)
-    .filter(key => key !== 'zenModeExclude')
+    .filter(key => key !== 'zenModeExclude' && key !== 'globalNav')
     .forEach(key => {
       showElements(SELECTORS[key]);
     });
+
+  // Show the global navigation bar
+  showElements(SELECTORS.globalNav);
 
   // Remove orange border and styling
   const postWriterElements = document.querySelectorAll(SELECTORS.zenModeExclude);
