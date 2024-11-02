@@ -1,3 +1,4 @@
+// All selectors used by the extension
 const SELECTORS = {
   homeFeed: `
     .feed-shared-update-v2,
@@ -27,6 +28,45 @@ const SELECTORS = {
     .share-creation-state__main-container,
     .share-box-feed-entry,
     .share-box__scrollable-content
+  `,
+  mediaContent: `
+    /* Articles with images */
+    .update-components-article,
+    .update-components-article__image-link,
+    .update-components-article--with-large-image,
+    .update-components-article__description-container,
+    
+    /* Videos */
+    .ember-view.video-js,
+    [data-vjs-player],
+    .vjs-tech,
+    .media-player__player,
+    .video-main-container,
+    
+    /* Documents/Carousel */
+    .update-components-document__container,
+    .document-s-container,
+    .carousel-container,
+    
+    /* General media containers */
+    .feed-shared-update-v2__content img,
+    .feed-shared-update-v2__content video,
+    .feed-shared-image__container,
+    .feed-shared-video__container,
+    .feed-shared-linkedin-video__container,
+    .feed-shared-external-video__container,
+    .feed-shared-carousel__content,
+    .feed-shared-article__preview-container,
+    .update-components-image,
+    .video-container,
+    
+    /* Additional containers */
+    .feed-shared-update-v2__content .update-components-image,
+    .feed-shared-update-v2__content .update-components-video,
+    .feed-shared-update-v2__content .update-components-document,
+    div[class*="feed-shared"][class*="image"],
+    div[class*="feed-shared"][class*="video"],
+    div[class*="feed-shared"][class*="document"]
   `
 };
 
@@ -34,7 +74,7 @@ const SELECTORS = {
 let observers = new Map();
 let zenModeActive = false;
 
-// Function to hide elements by selector
+// Function to hide elements
 function hideElements(selector) {
   const elements = document.querySelectorAll(selector);
   elements.forEach(element => {
@@ -44,7 +84,7 @@ function hideElements(selector) {
   });
 }
 
-// Function to show elements by selector
+// Function to show elements
 function showElements(selector) {
   const elements = document.querySelectorAll(selector);
   elements.forEach(element => {
@@ -54,7 +94,50 @@ function showElements(selector) {
   });
 }
 
-// Function to start observing changes for a specific feature
+// Function to handle media content
+function handleMediaContent(mutations) {
+  mutations.forEach(mutation => {
+    mutation.addedNodes.forEach(node => {
+      if (node.nodeType === 1) {
+        // Find and hide all media elements
+        const mediaElements = node.querySelectorAll(SELECTORS.mediaContent);
+        mediaElements.forEach(element => {
+          // Hide the element
+          element.style.display = 'none';
+          
+          // Also hide parent container if it's a media wrapper
+          let parent = element.parentElement;
+          while (parent && !parent.classList.contains('feed-shared-update-v2')) {
+            if (parent.classList.contains('update-components-article') || 
+                parent.classList.contains('document-s-container') ||
+                parent.classList.contains('video-js') ||
+                parent.classList.contains('update-components-image') ||
+                parent.classList.contains('update-components-video') ||
+                parent.classList.contains('update-components-document')) {
+              parent.style.display = 'none';
+            }
+            parent = parent.parentElement;
+          }
+        });
+
+        // Direct handling for video players
+        const videoPlayers = node.querySelectorAll('[data-vjs-player], .video-js');
+        videoPlayers.forEach(player => {
+          player.style.display = 'none';
+          const parentContainer = player.closest('.feed-shared-update-v2__content');
+          if (parentContainer) {
+            const mediaWrapper = parentContainer.querySelector('.video-container');
+            if (mediaWrapper) {
+              mediaWrapper.style.display = 'none';
+            }
+          }
+        });
+      }
+    });
+  });
+}
+
+// Function to start observing changes
 function startObserving(featureType) {
   stopObserving(featureType);
 
@@ -62,22 +145,26 @@ function startObserving(featureType) {
   const config = { childList: true, subtree: true };
 
   const observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      if (mutation.type === 'childList') {
-        if (featureType === 'zenMode') {
-          applyZenMode();
-        } else {
+    if (featureType === 'zenMode') {
+      applyZenMode();
+    } else if (featureType === 'mediaContent') {
+      handleMediaContent(mutations);
+      // Also immediately hide any existing media content
+      hideElements(SELECTORS.mediaContent);
+    } else {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'childList') {
           hideElements(SELECTORS[featureType]);
         }
-      }
-    });
+      });
+    }
   });
 
   observer.observe(targetNode, config);
   observers.set(featureType, observer);
 }
 
-// Function to stop observing changes for a specific feature
+// Function to stop observing changes
 function stopObserving(featureType) {
   const observer = observers.get(featureType);
   if (observer) {
@@ -88,18 +175,14 @@ function stopObserving(featureType) {
 
 // Apply Zen Mode
 function applyZenMode() {
-  // Hide everything except post writer
   const excludeSelectors = Object.keys(SELECTORS)
     .filter(key => key !== 'zenModeExclude' && key !== 'globalNav')
     .map(key => SELECTORS[key])
     .join(', ');
 
   hideElements(excludeSelectors);
-
-  // Hide the global navigation bar
   hideElements(SELECTORS.globalNav);
 
-  // Highlight post writer with orange border
   const postWriterElements = document.querySelectorAll(SELECTORS.zenModeExclude);
   postWriterElements.forEach(el => {
     el.style.transition = 'all 0.3s ease';
@@ -122,35 +205,23 @@ function applyZenMode() {
 
 // Remove Zen Mode styling
 function removeZenMode() {
-  // Restore visibility of all elements
   Object.keys(SELECTORS)
     .filter(key => key !== 'zenModeExclude' && key !== 'globalNav')
     .forEach(key => {
       showElements(SELECTORS[key]);
     });
 
-  // Show the global navigation bar
   showElements(SELECTORS.globalNav);
 
-  // Remove orange border and styling
   const postWriterElements = document.querySelectorAll(SELECTORS.zenModeExclude);
   postWriterElements.forEach(el => {
-    el.style.transition = '';
-    el.style.border = '';
-    el.style.margin = '';
-    el.style.borderRadius = '';
-    el.style.padding = '';
-    el.style.backgroundColor = '';
-    el.style.position = '';
-    el.style.top = '';
-    el.style.left = '';
-    el.style.transform = '';
-    el.style.zIndex = '';
-    el.style.maxWidth = '';
-    el.style.maxHeight = '';
-    el.style.overflow = '';
-    el.style.boxShadow = '';
+    el.style.cssText = '';
   });
+}
+
+// Initialize media content hiding
+function initializeMediaContent() {
+  hideElements(SELECTORS.mediaContent);
 }
 
 // Handle messages from popup
@@ -167,6 +238,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         stopObserving('zenMode');
         removeZenMode();
       }
+    } else if (elementType === 'mediaContent') {
+      if (hidden) {
+        startObserving('mediaContent');
+        initializeMediaContent();
+      } else {
+        stopObserving('mediaContent');
+        showElements(SELECTORS.mediaContent);
+      }
     } else {
       if (hidden) {
         startObserving(elementType);
@@ -181,13 +260,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       stopObserving(type);
     });
     
-    // Remove Zen Mode if active
     if (zenModeActive) {
       removeZenMode();
       zenModeActive = false;
     }
 
-    // Show all elements
     Object.values(SELECTORS).forEach(selector => {
       showElements(selector);
     });
@@ -196,7 +273,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 // Apply saved settings on page load
 chrome.storage.sync.get(null, (settings) => {
-  if (settings.extensionEnabled !== false) {
+  if (settings.extensionEnabledHidden !== false) {
     Object.keys(settings).forEach(key => {
       if (key.endsWith('Hidden') && settings[key] === true) {
         const elementType = key.replace('Hidden', '');
@@ -205,6 +282,9 @@ chrome.storage.sync.get(null, (settings) => {
             zenModeActive = true;
             startObserving('zenMode');
             applyZenMode();
+          } else if (elementType === 'mediaContent') {
+            startObserving('mediaContent');
+            initializeMediaContent();
           } else {
             startObserving(elementType);
             hideElements(SELECTORS[elementType]);

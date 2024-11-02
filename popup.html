@@ -1,123 +1,184 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>LinkedIn Distraction-Free Extension</title>
+  <head>
+    <meta charset="UTF-8" />
     <style>
-        body {
-            width: 300px;
-            padding: 10px;
-            font-family: Arial, sans-serif;
-        }
-        .section-title {
-            font-weight: bold;
-            margin-top: 15px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 5px;
-        }
-        .toggle-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 10px 0;
-        }
-        .toggle-label {
-            flex-grow: 1;
-        }
-        .slider {
-            position: relative;
-            display: inline-block;
-            width: 40px;
-            height: 20px;
-            background-color: #ccc;
-            border-radius: 20px;
-        }
-        input[type="checkbox"] {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        input[type="checkbox"] + .slider:after {
-            content: '';
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: white;
-            top: 2px;
-            left: 2px;
-            transition: 0.3s;
-        }
-        input[type="checkbox"]:checked + .slider {
-            background-color: #2196F3;
-        }
-        input[type="checkbox"]:checked + .slider:after {
-            transform: translateX(20px);
-        }
+      body {
+        width: 300px;
+        padding: 15px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin: 10px 0 5px 0;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .toggle-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+      }
+
+      .toggle-container label {
+        font-size: 13px;
+        color: #333;
+        cursor: pointer;
+      }
+
+      /* Toggle switch styling */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.3s;
+        border-radius: 20px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: 0.3s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #0a66c2;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(20px);
+      }
+
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #666;
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px solid #e0e0e0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="section-title">Extension Status</div>
-        <div class="toggle-container">
-            <label class="toggle-label" for="extensionEnabled">Extension Enabled</label>
-            <input type="checkbox" id="extensionEnabled" checked>
-            <label for="extensionEnabled" class="slider"></label>
-        </div>
+      <div class="section-title">Extension Status</div>
+      <div class="toggle-container">
+        <label for="extensionEnabled">Extension Enabled</label>
+        <label class="switch">
+          <input type="checkbox" id="extensionEnabled" />
+          <span class="slider"></span>
+        </label>
+      </div>
 
-        <div class="section-title">Zen Mode</div>
-        <div class="toggle-container">
-            <label class="toggle-label" for="zenMode">Zen Mode (Writer Focus)</label>
-            <input type="checkbox" id="zenMode">
-            <label for="zenMode" class="slider"></label>
-        </div>
+      <div class="section-title">Zen Mode</div>
+      <div class="toggle-container">
+        <label for="zenMode">Zen Mode (Writer Focus)</label>
+        <label class="switch">
+          <input type="checkbox" id="zenMode" />
+          <span class="slider"></span>
+        </label>
+      </div>
 
-        <div class="section-title">Feed Customization</div>
-        <div class="toggle-container">
-            <label class="toggle-label" for="homeFeed">Home Feed</label>
-            <input type="checkbox" id="homeFeed">
-            <label for="homeFeed" class="slider"></label>
-        </div>
+      <div class="section-title">Feed Customization</div>
+      <div class="toggle-container">
+        <label for="homeFeed">Home Feed</label>
+        <label class="switch">
+          <input type="checkbox" id="homeFeed" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-container">
+        <label for="mediaContent">Hide Media Content</label>
+        <label class="switch">
+          <input type="checkbox" id="mediaContent" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-container">
+        <label for="rightSidebar">Right Sidebar</label>
+        <label class="switch">
+          <input type="checkbox" id="rightSidebar" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-container">
+        <label for="leftSidebar">Left Sidebar</label>
+        <label class="switch">
+          <input type="checkbox" id="leftSidebar" />
+          <span class="slider"></span>
+        </label>
+      </div>
 
-        <div class="toggle-container">
-            <label class="toggle-label" for="rightSidebar">Right Sidebar</label>
-            <input type="checkbox" id="rightSidebar">
-            <label for="rightSidebar" class="slider"></label>
-        </div>
+      <div class="section-title">Remove Distracting Elements</div>
+      <div class="toggle-container">
+        <label for="adBanners">Advertisement Banners</label>
+        <label class="switch">
+          <input type="checkbox" id="adBanners" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-container">
+        <label for="engagementSection">Post Engagements</label>
+        <label class="switch">
+          <input type="checkbox" id="engagementSection" />
+          <span class="slider"></span>
+        </label>
+      </div>
 
-        <div class="toggle-container">
-            <label class="toggle-label" for="leftSidebar">Left Sidebar</label>
-            <input type="checkbox" id="leftSidebar">
-            <label for="leftSidebar" class="slider"></label>
-        </div>
-
-        <div class="section-title">Remove Distracting Elements</div>
-        <div class="toggle-container">
-            <label class="toggle-label" for="adBanners">Advertisement Banners</label>
-            <input type="checkbox" id="adBanners">
-            <label for="adBanners" class="slider"></label>
-        </div>
-
-        <div class="toggle-container">
-            <label class="toggle-label" for="engagementSection">Post Engagements</label>
-            <input type="checkbox" id="engagementSection">
-            <label for="engagementSection" class="slider"></label>
-        </div>
-
-        <div class="section-title">Additional Settings</div>
-        <div class="toggle-container">
-            <label class="toggle-label" for="notificationCount">Notification Counts</label>
-            <input type="checkbox" id="notificationCount">
-            <label for="notificationCount" class="slider"></label>
-        </div>
-
-        <div class="toggle-container">
-            <label class="toggle-label" for="messagingSection">Messaging Section</label>
-            <input type="checkbox" id="messagingSection">
-            <label for="messagingSection" class="slider"></label>
-        </div>
+      <div class="section-title">Additional Settings</div>
+      <div class="toggle-container">
+        <label for="notificationCount">Notification Counts</label>
+        <label class="switch">
+          <input type="checkbox" id="notificationCount" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-container">
+        <label for="messagingSection">Messaging Section</label>
+        <label class="switch">
+          <input type="checkbox" id="messagingSection" />
+          <span class="slider"></span>
+        </label>
+      </div>
     </div>
 
-    <footer>Made with ♥ for a distraction-free LinkedIn</footer>
+    <div class="footer">Made with ♥ for a distraction-free LinkedIn</div>
+
     <script src="popup.js"></script>
-</body>
+  </body>
 </html>

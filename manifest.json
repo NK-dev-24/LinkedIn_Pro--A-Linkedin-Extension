@@ -27,4 +27,8 @@
       "css": ["styles.css"]
     }
   ]
+  ,
+  "host_permissions": [
+    "https://*.linkedin.com/*"
+  ]
 }
