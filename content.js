@@ -22,13 +22,7 @@ const SELECTORS = {
   notificationCount: '.notification-badge',
   messagingSection: '.msg-overlay-list-bubble',
   globalNav: '#global-nav',
-  zenModeExclude: `
-    .share-box-feed-entry__content, 
-    .ql-editor,
-    .share-creation-state__main-container,
-    .share-box-feed-entry,
-    .share-box__scrollable-content
-  `,
+  zenModeExclude: '.share-box-feed-entry__content',
   mediaContent: `
     /* Articles with images */
     .update-components-article,
@@ -102,10 +96,8 @@ function handleMediaContent(mutations) {
         // Find and hide all media elements
         const mediaElements = node.querySelectorAll(SELECTORS.mediaContent);
         mediaElements.forEach(element => {
-          // Hide the element
           element.style.display = 'none';
           
-          // Also hide parent container if it's a media wrapper
           let parent = element.parentElement;
           while (parent && !parent.classList.contains('feed-shared-update-v2')) {
             if (parent.classList.contains('update-components-article') || 
@@ -120,7 +112,6 @@ function handleMediaContent(mutations) {
           }
         });
 
-        // Direct handling for video players
         const videoPlayers = node.querySelectorAll('[data-vjs-player], .video-js');
         videoPlayers.forEach(player => {
           player.style.display = 'none';
@@ -137,6 +128,51 @@ function handleMediaContent(mutations) {
   });
 }
 
+// Function to apply Zen Mode
+function applyZenMode() {
+  const excludeSelectors = Object.keys(SELECTORS)
+    .filter(key => key !== 'zenModeExclude' && key !== 'globalNav')
+    .map(key => SELECTORS[key])
+    .join(', ');
+
+  hideElements(excludeSelectors);
+  hideElements(SELECTORS.globalNav);
+
+  // Hide the "What do you want to talk about?" popup
+  const style = document.createElement('style');
+  style.id = 'zen-mode-styles';
+  style.textContent = `
+    .artdeco-hoverable-content {
+      display: none !important;
+    }
+    .share-box-feed-entry__content {
+      border: 3px solid orange !important;
+      border-radius: 8px !important;
+      padding: 10px !important;
+      margin: 10px !important;
+      background-color: white !important;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// Function to remove Zen Mode
+function removeZenMode() {
+  const style = document.getElementById('zen-mode-styles');
+  if (style) {
+    style.remove();
+  }
+
+  Object.keys(SELECTORS)
+    .filter(key => key !== 'zenModeExclude' && key !== 'globalNav')
+    .forEach(key => {
+      showElements(SELECTORS[key]);
+    });
+
+  showElements(SELECTORS.globalNav);
+}
+
 // Function to start observing changes
 function startObserving(featureType) {
   stopObserving(featureType);
@@ -149,7 +185,6 @@ function startObserving(featureType) {
       applyZenMode();
     } else if (featureType === 'mediaContent') {
       handleMediaContent(mutations);
-      // Also immediately hide any existing media content
       hideElements(SELECTORS.mediaContent);
     } else {
       mutations.forEach(function(mutation) {
@@ -171,52 +206,6 @@ function stopObserving(featureType) {
     observer.disconnect();
     observers.delete(featureType);
   }
-}
-
-// Apply Zen Mode
-function applyZenMode() {
-  const excludeSelectors = Object.keys(SELECTORS)
-    .filter(key => key !== 'zenModeExclude' && key !== 'globalNav')
-    .map(key => SELECTORS[key])
-    .join(', ');
-
-  hideElements(excludeSelectors);
-  hideElements(SELECTORS.globalNav);
-
-  const postWriterElements = document.querySelectorAll(SELECTORS.zenModeExclude);
-  postWriterElements.forEach(el => {
-    el.style.transition = 'all 0.3s ease';
-    el.style.border = '3px solid orange';
-    el.style.margin = '10px';
-    el.style.borderRadius = '8px';
-    el.style.padding = '10px';
-    el.style.backgroundColor = 'white';
-    el.style.position = 'fixed';
-    el.style.top = '50%';
-    el.style.left = '50%';
-    el.style.transform = 'translate(-50%, -50%)';
-    el.style.zIndex = '9999';
-    el.style.maxWidth = '80%';
-    el.style.maxHeight = '80%';
-    el.style.overflow = 'auto';
-    el.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
-  });
-}
-
-// Remove Zen Mode styling
-function removeZenMode() {
-  Object.keys(SELECTORS)
-    .filter(key => key !== 'zenModeExclude' && key !== 'globalNav')
-    .forEach(key => {
-      showElements(SELECTORS[key]);
-    });
-
-  showElements(SELECTORS.globalNav);
-
-  const postWriterElements = document.querySelectorAll(SELECTORS.zenModeExclude);
-  postWriterElements.forEach(el => {
-    el.style.cssText = '';
-  });
 }
 
 // Initialize media content hiding
