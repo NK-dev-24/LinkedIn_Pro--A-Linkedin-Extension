@@ -1,82 +1,90 @@
-# LinkedIn Distraction Reducer
-A Chrome extension that transforms your LinkedIn experience by removing distracting elements and adding focus-enhancing features.
-Overview
-LinkedIn Distraction Reducer helps you maintain focus while using LinkedIn by providing customizable controls to hide feeds, advertisements, notifications, and other potentially distracting elements. It includes a Zen Mode for distraction-free content creation.
-## Features
-### Core Features
 
-Extension-wide toggle for quick enable/disable
-Zen Mode for focused writing
-Feed customization options
-Distraction element controls
-Persistent settings sync
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/4cac5828-9ac6-41aa-bbc9-275e36bf864e" alt="LinkedIn Distraction Reducer Logo" width="128" height="128">
+  <h1>Li Focus <br> Make Linkedin Better, The way you want</h1>
+</div> 
 
-### Feed Controls
+Available on **Chrome** via **manual installation.** 
 
-- Toggle home feed visibility
-- Hide media content (images, videos, documents)
-- Control left and right sidebar visibility
-- Remove advertisement banners
-- Hide post engagement metrics
+![image](https://github.com/user-attachments/assets/8948b1a5-9163-4a4f-a7d1-5f00bb503b0b)
 
-### Additional Controls
+## ✨ Features
 
-- Notification count visibility
-- Messaging section toggle
-- Dynamic content filtering
+- **Writer Focus Mode** - Hide all distracting elements with a single click (Ctrl+Shift+Z)
+- **Customizable Interface** - Toggle specific elements:
+  - Home Feed
+  - Media Content
+  - Advertisements
+  - Notification Counts
+  - Messaging Section
+  - Right Sidebar
+  - Left Sidebar
 
-## Installation
+## 🚀 Installation
 
-- Download the extension files
-- Navigate to chrome://extensions/ in Chrome
-- Enable "Developer mode" in the top right
-- Click "Load unpacked" and select the extension directory
+### For Users
+1. Download from Chrome Web Store (Coming Soon) or Manually
 
-## Usage
-After installation, click the extension icon in your Chrome toolbar to access the control panel. From there you can:
-- Basic Configuration
-- Enable/disable the extension
-- Toggle individual features
-- Activate Zen Mode
+### Install Manually 
+Open the bundle folder. Here the packages zipped up: 
+- Chrome.zip
+  
+Open them and follow the instructions below based on which browser you'd like to install the extension on:
 
-Zen Mode
-Zen Mode provides a distraction-free writing environment
+1. Open chrome://extensions or edge://extensions
+2. Turn on the Developer mode toggle
+3. Click on the Load unpacked button
+4. Select the folder bundle/chrome
 
-### Technical Details
-The extension requires minimal permissions:
+## 🛠️ Development
 
-storage: For saving user preferences
-activeTab: For modifying LinkedIn interface
-host_permissions: Limited to LinkedIn domains only
+### Project Structure
+```
+📂
+├──📂 images/
+│  ├── icon16.png
+│  ├── icon32.png
+│  ├── icon48.png
+│  └── icon128.png
+├── 📄 manifest.json
+├── 📄 popup.html
+├── 📄 popup.js
+├── 📄 content.js
+├── 📄 background.js
+└── 📄 styles.css
+```
 
-## Privacy
-### The extension:
+### Bug Reports
+Found a bug? Please open an issue with:
 
-- Works entirely within your browser
-- Stores preferences locally
-- Does not collect user data
-- Makes no external network requests
+- Clear description of the problem
+- Steps to reproduce
+- Expected vs actual behavior
+- Screenshots if applicable
+- Your browser version
 
-## License
-© 2024 LinkedIn Distraction Reducer. All rights reserved.
-This software is licensed for personal, non-commercial use only.
-Permissions
+## 🤝 Contributing
 
-Use the extension for personal productivity
-Install on personal devices
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-### Restrictions
+## 📝 License
 
-- No commercial use
-- No modification or distribution
-- No derivative works
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
-Issues Reporting :
-Feedback / Feature Request :
+💖 Support
+Like this extension? Here's how you can show your support:
 
-Email: [your-email@domain.com]
-Support: [contact form link]
+- Star this repository
+- Share with your network
+- Buy me a coffee (Just Kidding) 
+- Report bugs and suggest features
 
+---
 
-Built for a focused LinkedIn experience
+<div align="center">
+  Made with :heart: by <a href="https://www.linkedin.com/in/naveen-kumar-v-link/">NK </a>
+</div>
