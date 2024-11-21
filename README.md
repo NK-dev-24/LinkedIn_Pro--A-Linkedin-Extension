@@ -3,7 +3,7 @@
   <h1>Li Focus <br> Make Linkedin Better, The way you want</h1>
 </div> 
 
-Available on **Chrome** via **manual installation.** 
+Available on **Chrome** via [**manual installation.**](https://github.com/NK-dev-24/LinkedIn_Pro--A-Linkedin-Extension/blob/main/README.md#install-manually) 
 
 ![image](https://github.com/user-attachments/assets/8948b1a5-9163-4a4f-a7d1-5f00bb503b0b)
 
@@ -21,23 +21,21 @@ Available on **Chrome** via **manual installation.**
 
 ## 🚀 Installation
 
-### For Users
 1. Download from Chrome Web Store (Coming Soon), Download Manually
 
 ### Install Manually 
 
-Video Tutorial:
+#### Video Tutorial:
 
 https://github.com/user-attachments/assets/324146a8-e40a-4d09-8b31-6525014e86d8
 
 
-Or [Click Here](https://www.loom.com/share/e1424da209a442c19c417104335aaeb0?sid=e4edc8cf-ab26-45ec-a689-13c3c5a56e73)
+Or [Watch here](https://www.loom.com/share/e1424da209a442c19c417104335aaeb0?sid=e4edc8cf-ab26-45ec-a689-13c3c5a56e73)
 
-
-Click Code (Green Button) -> Download Zip 
-  
+#### Steps To download the extension:
+1. Click Code (Green Button) -> Download Zip
+   
 Open them and follow the instructions below to install the extension:
-
 1. Open chrome://extensions or edge://extensions
 2. Turn on the Developer mode toggle
 3. Click on the Load unpacked button
