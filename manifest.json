@@ -1,34 +1,62 @@
 {
   "manifest_version": 3,
   "name": "LinkedIn Distraction Reducer",
-  "version": "1.0",
-  "description": "Customize your LinkedIn experience by hiding unwanted sections",
+  "version": "1.0.0",
+  "description": "Customize your LinkedIn experience by hiding unwanted sections and reducing distractions",
+  "author": "NK",
   "permissions": [
     "storage",
     "activeTab"
   ],
+  "commands": {
+    "toggle-zen-mode": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Z",
+        "mac": "Command+Shift+Z"
+      },
+      "description": "Toggle Writer Mode"
+    },
+    "toggle-extension": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E",
+        "mac": "Command+Shift+E"
+      },
+      "description": "Toggle Extension On/Off"
+    }
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
       "16": "images/icon16.png",
+      "32": "images/icon32.png",
       "48": "images/icon48.png",
       "128": "images/icon128.png"
     }
   },
   "icons": {
     "16": "images/icon16.png",
-    "48": "images/icon48.png", 
+    "32": "images/icon32.png",
+    "48": "images/icon48.png",
     "128": "images/icon128.png"
   },
   "content_scripts": [
     {
       "matches": ["*://www.linkedin.com/*"],
-      "js": ["content.js"],
-      "css": ["styles.css"]
+      "js": [ "content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_end"
     }
-  ]
-  ,
+  ],
   "host_permissions": [
     "https://*.linkedin.com/*"
-  ]
+  ],
+  "web_accessible_resources": [{
+    "resources": ["images/*"],
+    "matches": ["https://*.linkedin.com/*"]
+  }],
+  "minimum_chrome_version": "88",
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  }
 }

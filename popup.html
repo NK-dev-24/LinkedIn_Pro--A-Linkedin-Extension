@@ -35,7 +35,11 @@
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </button>
-        <button id="powerButton" class="control-button power-button">
+        <button
+          id="powerButton"
+          class="control-button power-button"
+          data-tooltip="Ctrl+Shift+E  &nbsp &nbsp "
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -59,7 +63,14 @@
         <h2 class="section-title">SPECIAL MODE</h2>
         <div class="toggle-list">
           <div class="toggle-item">
-            <span class="toggle-label">WRITER FOCUS MODE</span>
+            <span class="toggle-label">
+              WRITER FOCUS MODE
+              <span
+                class="info-icon"
+                data-tooltip="Hides all the distracting elements in just a click (Ctrl+Shift+Z)"
+                >i</span
+              >
+            </span>
             <label class="toggle">
               <input type="checkbox" id="zenMode" />
               <span class="slider"></span>
@@ -121,10 +132,167 @@
           </div>
         </div>
       </div>
+      <div class="section">
+        <h2 class="section-title">NAVBAR CONTROLS</h2>
+        <div class="navbar-controls">
+          <div class="navbar-item" data-tooltip="Toggle Home Icon">
+            <button class="control-button navbar-toggle" id="hideHomeIcon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </button>
+            <span class="navbar-label">Home</span>
+          </div>
+
+          <div class="navbar-item" data-tooltip="Toggle Network Icon">
+            <button class="control-button navbar-toggle" id="hideNetworkIcon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </button>
+            <span class="navbar-label">Network</span>
+          </div>
+
+          <div class="navbar-item" data-tooltip="Toggle Jobs Icon">
+            <button class="control-button navbar-toggle" id="hideJobsIcon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            </button>
+            <span class="navbar-label">Jobs</span>
+          </div>
+
+          <div class="navbar-item" data-tooltip="Toggle Messaging Icon">
+            <button class="control-button navbar-toggle" id="hideMessagingIcon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                ></path>
+              </svg>
+            </button>
+            <span class="navbar-label">Messaging</span>
+          </div>
+
+          <div class="navbar-item" data-tooltip="Toggle Notifications Icon">
+            <button
+              class="control-button navbar-toggle"
+              id="hideNotificationsIcon"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+            </button>
+            <span class="navbar-label">Notifications</span>
+          </div>
+
+          <div class="navbar-item" data-tooltip="Toggle Me Icon">
+            <button class="control-button navbar-toggle" id="hideMeIcon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </button>
+            <span class="navbar-label">Me</span>
+          </div>
+
+          <div class="navbar-item" data-tooltip="Toggle Business Icon">
+            <button class="control-button navbar-toggle" id="hideBusinessIcon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
+                ></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+            </button>
+            <span class="navbar-label">Business</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="footer">
-      <button id="feedbackBtn" class="footer-button">
+      <button
+        id="feedbackBtn"
+        class="footer-button"
+        data-tooltip="Share feedback, request features, or report bugs"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
@@ -142,7 +310,11 @@
         </svg>
         FEEDBACK
       </button>
-      <button id="githubBtn" class="footer-button">
+      <button
+        id="githubBtn"
+        class="footer-button"
+        data-tooltip="Star this project"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"

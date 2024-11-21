@@ -15,14 +15,14 @@ const SELECTORS = {
     div[class="artdeco-dropdown artdeco-dropdown--placement-bottom artdeco-dropdown--justification-right ember-view"],
     button[class*="artdeco-dropdown__trigger"][class*="full-width"][class*="display-flex"]
   `,
-  rightSidebar: '.scaffold-layout__aside',
-  leftSidebar: '.scaffold-layout__sidebar, .profile-rail-card',
-  engagementSection: '.social-details-social-counts',
-  adBanners: '.ad-banner-container',
-  notificationCount: '.notification-badge',
-  messagingSection: '.msg-overlay-list-bubble',
-  globalNav: '#global-nav',
-  zenModeExclude: '.share-box-feed-entry__content',
+  rightSidebar: ".scaffold-layout__aside",
+  leftSidebar: ".scaffold-layout__sidebar, .profile-rail-card",
+  engagementSection: ".social-details-social-counts",
+  adBanners: ".ad-banner-container",
+  notificationCount: ".notification-badge",
+  messagingSection: ".msg-overlay-list-bubble",
+  globalNav: "#global-nav",
+  zenModeExclude: ".share-box-feed-entry__content",
   mediaContent: `
     /* Articles with images */
     .update-components-article,
@@ -61,7 +61,17 @@ const SELECTORS = {
     div[class*="feed-shared"][class*="image"],
     div[class*="feed-shared"][class*="video"],
     div[class*="feed-shared"][class*="document"]
-  `
+  `,
+};
+
+const NAVBAR_SELECTORS = {
+  hideHomeIcon: ".global-nav__primary-items > li:nth-child(1)",
+  hideNetworkIcon: ".global-nav__primary-items > li:nth-child(2)",
+  hideJobsIcon: ".global-nav__primary-items > li:nth-child(3)",
+  hideMessagingIcon: ".global-nav__primary-items > li:nth-child(4)",
+  hideNotificationsIcon: ".global-nav__primary-items > li:nth-child(5)",
+  hideMeIcon: ".global-nav__primary-items > li:nth-child(6)",
+  hideBusinessIcon: ".global-nav__primary-items > li:nth-child(7)",
 };
 
 // Keep track of active observers
@@ -71,9 +81,9 @@ let zenModeActive = false;
 // Function to hide elements
 function hideElements(selector) {
   const elements = document.querySelectorAll(selector);
-  elements.forEach(element => {
+  elements.forEach((element) => {
     if (element) {
-      element.style.display = 'none';
+      element.style.display = "none";
     }
   });
 }
@@ -81,45 +91,70 @@ function hideElements(selector) {
 // Function to show elements
 function showElements(selector) {
   const elements = document.querySelectorAll(selector);
-  elements.forEach(element => {
+  elements.forEach((element) => {
     if (element) {
-      element.style.display = '';
+      element.style.display = "";
     }
   });
 }
 
+// Function to handle navbar icon visibility
+function toggleNavbarIcon(iconType, hidden) {
+  const selector = NAVBAR_SELECTORS[iconType];
+  if (selector) {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.style.display = hidden ? "none" : "";
+      // Save the state
+      chrome.storage.sync.set({
+        [iconType + "Hidden"]: hidden,
+      });
+    }
+  }
+}
+
 // Function to handle media content
 function handleMediaContent(mutations) {
-  mutations.forEach(mutation => {
-    mutation.addedNodes.forEach(node => {
+  mutations.forEach((mutation) => {
+    mutation.addedNodes.forEach((node) => {
       if (node.nodeType === 1) {
         // Find and hide all media elements
         const mediaElements = node.querySelectorAll(SELECTORS.mediaContent);
-        mediaElements.forEach(element => {
-          element.style.display = 'none';
-          
+        mediaElements.forEach((element) => {
+          element.style.display = "none";
+
           let parent = element.parentElement;
-          while (parent && !parent.classList.contains('feed-shared-update-v2')) {
-            if (parent.classList.contains('update-components-article') || 
-                parent.classList.contains('document-s-container') ||
-                parent.classList.contains('video-js') ||
-                parent.classList.contains('update-components-image') ||
-                parent.classList.contains('update-components-video') ||
-                parent.classList.contains('update-components-document')) {
-              parent.style.display = 'none';
+          while (
+            parent &&
+            !parent.classList.contains("feed-shared-update-v2")
+          ) {
+            if (
+              parent.classList.contains("update-components-article") ||
+              parent.classList.contains("document-s-container") ||
+              parent.classList.contains("video-js") ||
+              parent.classList.contains("update-components-image") ||
+              parent.classList.contains("update-components-video") ||
+              parent.classList.contains("update-components-document")
+            ) {
+              parent.style.display = "none";
             }
             parent = parent.parentElement;
           }
         });
 
-        const videoPlayers = node.querySelectorAll('[data-vjs-player], .video-js');
-        videoPlayers.forEach(player => {
-          player.style.display = 'none';
-          const parentContainer = player.closest('.feed-shared-update-v2__content');
+        const videoPlayers = node.querySelectorAll(
+          "[data-vjs-player], .video-js"
+        );
+        videoPlayers.forEach((player) => {
+          player.style.display = "none";
+          const parentContainer = player.closest(
+            ".feed-shared-update-v2__content"
+          );
           if (parentContainer) {
-            const mediaWrapper = parentContainer.querySelector('.video-container');
+            const mediaWrapper =
+              parentContainer.querySelector(".video-container");
             if (mediaWrapper) {
-              mediaWrapper.style.display = 'none';
+              mediaWrapper.style.display = "none";
             }
           }
         });
@@ -131,16 +166,16 @@ function handleMediaContent(mutations) {
 // Function to apply Zen Mode
 function applyZenMode() {
   const excludeSelectors = Object.keys(SELECTORS)
-    .filter(key => key !== 'zenModeExclude' && key !== 'globalNav')
-    .map(key => SELECTORS[key])
-    .join(', ');
+    .filter((key) => key !== "zenModeExclude" && key !== "globalNav")
+    .map((key) => SELECTORS[key])
+    .join(", ");
 
   hideElements(excludeSelectors);
   hideElements(SELECTORS.globalNav);
 
   // Hide the "What do you want to talk about?" popup
-  const style = document.createElement('style');
-  style.id = 'zen-mode-styles';
+  const style = document.createElement("style");
+  style.id = "zen-mode-styles";
   style.textContent = `
     .artdeco-hoverable-content {
       display: none !important;
@@ -159,14 +194,14 @@ function applyZenMode() {
 
 // Function to remove Zen Mode
 function removeZenMode() {
-  const style = document.getElementById('zen-mode-styles');
+  const style = document.getElementById("zen-mode-styles");
   if (style) {
     style.remove();
   }
 
   Object.keys(SELECTORS)
-    .filter(key => key !== 'zenModeExclude' && key !== 'globalNav')
-    .forEach(key => {
+    .filter((key) => key !== "zenModeExclude" && key !== "globalNav")
+    .forEach((key) => {
       showElements(SELECTORS[key]);
     });
 
@@ -180,15 +215,15 @@ function startObserving(featureType) {
   const targetNode = document.body;
   const config = { childList: true, subtree: true };
 
-  const observer = new MutationObserver(function(mutations) {
-    if (featureType === 'zenMode') {
+  const observer = new MutationObserver(function (mutations) {
+    if (featureType === "zenMode") {
       applyZenMode();
-    } else if (featureType === 'mediaContent') {
+    } else if (featureType === "mediaContent") {
       handleMediaContent(mutations);
       hideElements(SELECTORS.mediaContent);
     } else {
-      mutations.forEach(function(mutation) {
-        if (mutation.type === 'childList') {
+      mutations.forEach(function (mutation) {
+        if (mutation.type === "childList") {
           hideElements(SELECTORS[featureType]);
         }
       });
@@ -215,24 +250,30 @@ function initializeMediaContent() {
 
 // Handle messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'toggleElement') {
+  if (request.type === "toggleElement") {
     const { elementType, hidden } = request;
-    
-    if (elementType === 'zenMode') {
+
+    // Handle navbar icon toggles
+    if (elementType.startsWith("hide") && elementType.endsWith("Icon")) {
+      toggleNavbarIcon(elementType, hidden);
+      return;
+    }
+
+    if (elementType === "zenMode") {
       zenModeActive = hidden;
       if (hidden) {
-        startObserving('zenMode');
+        startObserving("zenMode");
         applyZenMode();
       } else {
-        stopObserving('zenMode');
+        stopObserving("zenMode");
         removeZenMode();
       }
-    } else if (elementType === 'mediaContent') {
+    } else if (elementType === "mediaContent") {
       if (hidden) {
-        startObserving('mediaContent');
+        startObserving("mediaContent");
         initializeMediaContent();
       } else {
-        stopObserving('mediaContent');
+        stopObserving("mediaContent");
         showElements(SELECTORS.mediaContent);
       }
     } else {
@@ -244,17 +285,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         showElements(SELECTORS[elementType]);
       }
     }
-  } else if (request.type === 'resetAll') {
+  } else if (request.type === "resetAll") {
     observers.forEach((observer, type) => {
       stopObserving(type);
     });
-    
+
     if (zenModeActive) {
       removeZenMode();
       zenModeActive = false;
     }
 
-    Object.values(SELECTORS).forEach(selector => {
+    // Show all navbar icons
+    Object.keys(NAVBAR_SELECTORS).forEach((iconType) => {
+      showElements(NAVBAR_SELECTORS[iconType]);
+    });
+
+    Object.values(SELECTORS).forEach((selector) => {
       showElements(selector);
     });
   }
@@ -263,16 +309,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Apply saved settings on page load
 chrome.storage.sync.get(null, (settings) => {
   if (settings.extensionEnabledHidden !== false) {
-    Object.keys(settings).forEach(key => {
-      if (key.endsWith('Hidden') && settings[key] === true) {
-        const elementType = key.replace('Hidden', '');
-        if (SELECTORS[elementType]) {
-          if (elementType === 'zenMode') {
+    Object.keys(settings).forEach((key) => {
+      if (key.endsWith("Hidden") && settings[key] === true) {
+        const elementType = key.replace("Hidden", "");
+
+        // Handle navbar icons
+        if (NAVBAR_SELECTORS[elementType]) {
+          toggleNavbarIcon(elementType, true);
+        } else if (SELECTORS[elementType]) {
+          if (elementType === "zenMode") {
             zenModeActive = true;
-            startObserving('zenMode');
+            startObserving("zenMode");
             applyZenMode();
-          } else if (elementType === 'mediaContent') {
-            startObserving('mediaContent');
+          } else if (elementType === "mediaContent") {
+            startObserving("mediaContent");
             initializeMediaContent();
           } else {
             startObserving(elementType);
