@@ -1,4 +1,3 @@
-
 <div align="center">
   <img src="https://github.com/user-attachments/assets/4cac5828-9ac6-41aa-bbc9-275e36bf864e" alt="LinkedIn Distraction Reducer Logo" width="128" height="128">
   <h1>Li Focus <br> Make Linkedin Better, The way you want</h1>
@@ -23,18 +22,26 @@ Available on **Chrome** via **manual installation.**
 ## 🚀 Installation
 
 ### For Users
-1. Download from Chrome Web Store (Coming Soon) or Manually
+1. Download from Chrome Web Store (Coming Soon), Download Manually
 
 ### Install Manually 
-Open the bundle folder. Here the packages zipped up: 
-- Chrome.zip
+
+Video Tutorial:
+
+https://github.com/user-attachments/assets/324146a8-e40a-4d09-8b31-6525014e86d8
+
+
+Or [Click Here](https://www.loom.com/share/e1424da209a442c19c417104335aaeb0?sid=e4edc8cf-ab26-45ec-a689-13c3c5a56e73)
+
+
+Click Code (Green Button) -> Download Zip 
   
-Open them and follow the instructions below based on which browser you'd like to install the extension on:
+Open them and follow the instructions below to install the extension:
 
 1. Open chrome://extensions or edge://extensions
 2. Turn on the Developer mode toggle
 3. Click on the Load unpacked button
-4. Select the folder bundle/chrome
+4. Select the folder
 
 ## 🛠️ Development
 
@@ -72,8 +79,10 @@ Found a bug? Please open an issue with:
 5. Open a Pull Request
 
 ## 📝 License
-
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+I am the maker of Li Focus, and We always adding new features and refinements to improve your Linkedin experience even more.
+This extension is not affiliated with or endorsed by LinkedIn Corporation. LinkedIn is a registered trademark of LinkedIn Corporation.
 
 💖 Support
 Like this extension? Here's how you can show your support:
