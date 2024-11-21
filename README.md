@@ -79,10 +79,13 @@ Found a bug? Please open an issue with:
 ## 📝 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-I am the maker of Li Focus, and We always adding new features and refinements to improve your Linkedin experience even more.
-This extension is not affiliated with or endorsed by LinkedIn Corporation. LinkedIn is a registered trademark of LinkedIn Corporation.
+<br>
 
-💖 Support
+I'm the maker of Extension, and We always adding new features and refinements to improve your Linkedin experience even more.
+This extension is not affiliated with or endorsed by LinkedIn Corporation.
+LinkedIn is a registered trademark of LinkedIn Corporation.
+
+## 💖 Support
 Like this extension? Here's how you can show your support:
 
 - Star this repository
