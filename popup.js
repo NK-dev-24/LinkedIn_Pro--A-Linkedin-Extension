@@ -1,5 +1,5 @@
 // Constants
-const GITHUB_REPO = "https://github.com/yourusername/li-focus";
+const GITHUB_REPO = "https://github.com/NK-dev-24/Li-Focus---A-Linkedin-Extension";
 const FORM =
   "https://docs.google.com/forms/d/e/1FAIpQLSevtYtDfXoiUBfl4NM6Ryb8Lfehmv0MYKaNaMHmDBUW_z5Afw/viewform?usp=sf_link";
 
