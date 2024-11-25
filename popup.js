@@ -8,13 +8,12 @@ const FEATURES = [
   "extensionEnabled",
   "homeFeed",
   "mediaContent",
-  "adBanners",
+  "promotedAndAds",
   "notificationCount",
   "messagingSection",
   "rightSidebar",
   "leftSidebar",
   "zenMode",
-  "promotedPosts", // Add promotedPosts to main features
 ];
 
 const NAVBAR_FEATURES = [

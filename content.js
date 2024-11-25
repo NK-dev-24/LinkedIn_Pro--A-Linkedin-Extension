@@ -18,12 +18,11 @@ const SELECTORS = {
   rightSidebar: ".scaffold-layout__aside",
   leftSidebar: ".scaffold-layout__sidebar, .profile-rail-card",
   engagementSection: ".social-details-social-counts",
-  adBanners: ".ad-banner-container",
   notificationCount: ".notification-badge",
   messagingSection: ".msg-overlay-list-bubble",
   globalNav: "#global-nav",
   zenModeExclude: ".share-box-feed-entry__content",
- promotedAndAds: `
+  promotedAndAds: `
     .ad-banner-container,
     a[class*="update-components"][class*="sub-description-link"][aria-label="Promoted"],
     div[class*="feed-shared-update-v2"]:has(a[aria-label="Promoted"]),
