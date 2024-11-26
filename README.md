@@ -27,7 +27,7 @@ Like this extension? Here's how you can show your support:
 - Star this repository
 - Share with your network
 - Report bugs and suggest features [Here](https://docs.google.com/forms/d/e/1FAIpQLSevtYtDfXoiUBfl4NM6Ryb8Lfehmv0MYKaNaMHmDBUW_z5Afw/viewform)
-(Buy me a coffee? Just kidding, it's free!)
+- (**Buy me a coffee?** Just kidding, it's free!)
 
 ## 🚀 Installation
 
