@@ -9,42 +9,47 @@ Available on **Chrome** via [**manual installation.**](https://github.com/NK-dev
 
 ## ✨ Features
 
-- **Writer Focus Mode** - Hide all distracting elements with a single click (Ctrl+Shift+Z)
-- **Customizable Interface** - Toggle specific elements:
+- **write better, faster** (**Writer Mode**) - Hide all distracting elements with a single click
+- **Stay on Task:** by remove irrelevant feeds, ads, and unnecessary notifications.
+- **Customize Your Experience**: Decide what to hide and what to keep visible.
   - Home Feed
   - Media Content
-  - Advertisements
+  - Promoted Content & Ads
   - Notification Counts
   - Messaging Section
   - Right Sidebar
   - Left Sidebar
+- **100% Privacy First**. We does not collect, store, or share any data.
 
  ## 💖 Support
 Like this extension? Here's how you can show your support:
 
 - Star this repository
 - Share with your network
-- Buy me a coffee (Just Kidding) 
 - Report bugs and suggest features [Here](https://docs.google.com/forms/d/e/1FAIpQLSevtYtDfXoiUBfl4NM6Ryb8Lfehmv0MYKaNaMHmDBUW_z5Afw/viewform)
+(Buy me a coffee? Just kidding, it's free!)
 
 ## 🚀 Installation
 
-1. Download Manually or Chrome Web Store (Coming Soon),
+### Option 1: Download Manually
 
-### Video Tutorial:
+1. Click the green Code button and select Download ZIP.
+2. Unzip the folder.
+   
+Steps to install:
+1. Open chrome://extensions or edge://extensions
+2. Enable Developer mode (toggle on the top right).
+3. Click Load unpacked.
+4. Select the unzipped folder.
+
+#### Video Tutorial:
 
 https://github.com/user-attachments/assets/324146a8-e40a-4d09-8b31-6525014e86d8
 
 Or [Watch here](https://www.loom.com/share/e1424da209a442c19c417104335aaeb0?sid=e4edc8cf-ab26-45ec-a689-13c3c5a56e73)
 
-### Steps To download the extension:
-1. Click Code (Green Button) -> Download Zip
-   
-Open them and follow the instructions below to install the extension:
-1. Open chrome://extensions or edge://extensions
-2. Turn on the Developer mode toggle
-3. Click on the Load unpacked button
-4. Select the folder
+### Option 2: Chrome Web Store
+(Coming Soon!)
 
 ## 🛠️ Development
 
@@ -85,12 +90,6 @@ Found a bug? Please open an issue with:
 ## 📝 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-<br>
-
-I'm the maker of Extension, and We always adding new features and refinements to improve your Linkedin experience even more.
-This extension is not affiliated with or endorsed by LinkedIn Corporation.
-LinkedIn is a registered trademark of LinkedIn Corporation.
-
 ## Privacy Policy
 LI Focus - A LinkedIn Distraction-Free Extension does not collect, store, or share any data. All settings and functionality are handled locally on your device. Your privacy is 100% respected.
 
@@ -99,3 +98,5 @@ LI Focus - A LinkedIn Distraction-Free Extension does not collect, store, or sha
 <div align="center">
   Made with :heart: by <a href="https://www.linkedin.com/in/naveen-kumar-v-link/">NK </a>
 </div>
+
+(This extension is not affiliated with or endorsed by LinkedIn Corporation. LinkedIn is a registered trademark of LinkedIn Corporation.)
