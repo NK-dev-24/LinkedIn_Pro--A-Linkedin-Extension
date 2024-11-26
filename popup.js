@@ -4,6 +4,8 @@ const GITHUB_REPO =
 const FORM =
   "https://docs.google.com/forms/d/e/1FAIpQLSevtYtDfXoiUBfl4NM6Ryb8Lfehmv0MYKaNaMHmDBUW_z5Afw/viewform?usp=sf_link";
 
+const EXTENSION_VERSION = '1.0.0';
+
 const FEATURES = [
   "extensionEnabled",
   "homeFeed",
