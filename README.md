@@ -19,20 +19,25 @@ Available on **Chrome** via [**manual installation.**](https://github.com/NK-dev
   - Right Sidebar
   - Left Sidebar
 
+ ## 💖 Support
+Like this extension? Here's how you can show your support:
+
+- Star this repository
+- Share with your network
+- Buy me a coffee (Just Kidding) 
+- Report bugs and suggest features [Here](https://docs.google.com/forms/d/e/1FAIpQLSevtYtDfXoiUBfl4NM6Ryb8Lfehmv0MYKaNaMHmDBUW_z5Afw/viewform)
+
 ## 🚀 Installation
 
-1. Download from Chrome Web Store (Coming Soon), Download Manually
+1. Download Manually or Chrome Web Store (Coming Soon),
 
-### Install Manually 
-
-#### Video Tutorial:
+### Video Tutorial:
 
 https://github.com/user-attachments/assets/324146a8-e40a-4d09-8b31-6525014e86d8
 
-
 Or [Watch here](https://www.loom.com/share/e1424da209a442c19c417104335aaeb0?sid=e4edc8cf-ab26-45ec-a689-13c3c5a56e73)
 
-#### Steps To download the extension:
+### Steps To download the extension:
 1. Click Code (Green Button) -> Download Zip
    
 Open them and follow the instructions below to install the extension:
@@ -59,14 +64,6 @@ Open them and follow the instructions below to install the extension:
 └── 📄 styles.css
 ```
 
-### Bug Reports
-Found a bug? Please open an issue with:
-
-- Clear description of the problem
-- Steps to reproduce
-- Expected vs actual behavior
-- Screenshots if applicable
-- Your browser version
 
 ## 🤝 Contributing
 
@@ -75,6 +72,15 @@ Found a bug? Please open an issue with:
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+### Bug Reports
+Found a bug? Please open an issue with:
+
+- Clear description of the problem
+- Steps to reproduce
+- Expected vs actual behavior
+- Screenshots if applicable
+- Your browser version
 
 ## 📝 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -85,13 +91,8 @@ I'm the maker of Extension, and We always adding new features and refinements to
 This extension is not affiliated with or endorsed by LinkedIn Corporation.
 LinkedIn is a registered trademark of LinkedIn Corporation.
 
-## 💖 Support
-Like this extension? Here's how you can show your support:
-
-- Star this repository
-- Share with your network
-- Buy me a coffee (Just Kidding) 
-- Report bugs and suggest features
+## Privacy Policy
+LI Focus - A LinkedIn Distraction-Free Extension does not collect, store, or share any data. All settings and functionality are handled locally on your device. Your privacy is 100% respected.
 
 ---
 
