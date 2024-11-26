@@ -255,58 +255,69 @@ function initializeMediaContent() {
 
 // Handle messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === "toggleElement") {
-    const { elementType, hidden } = request;
+  try {
+    if (request.type === "toggleElement") {
+      const { elementType, hidden } = request;
 
-    // Handle navbar icon toggles
-    if (elementType.startsWith("hide") && elementType.endsWith("Icon")) {
-      toggleNavbarIcon(elementType, hidden);
-      return;
-    }
+      // Handle navbar icon toggles
+      if (elementType.startsWith("hide") && elementType.endsWith("Icon")) {
+        toggleNavbarIcon(elementType, hidden);
+        return;
+      }
 
-    if (elementType === "zenMode") {
-      zenModeActive = hidden;
-      if (hidden) {
-        startObserving("zenMode");
-        applyZenMode();
+      if (elementType === "zenMode") {
+        zenModeActive = hidden;
+        if (hidden) {
+          startObserving("zenMode");
+          applyZenMode();
+        } else {
+          stopObserving("zenMode");
+          removeZenMode();
+        }
+      } else if (elementType === "mediaContent") {
+        if (hidden) {
+          startObserving("mediaContent");
+          initializeMediaContent();
+        } else {
+          stopObserving("mediaContent");
+          showElements(SELECTORS.mediaContent);
+        }
       } else {
-        stopObserving("zenMode");
+        if (hidden) {
+          startObserving(elementType);
+          hideElements(SELECTORS[elementType]);
+        } else {
+          stopObserving(elementType);
+          showElements(SELECTORS[elementType]);
+        }
+      }
+    } else if (request.type === "resetAll") {
+      observers.forEach((observer, type) => {
+        stopObserving(type);
+      });
+
+      if (zenModeActive) {
         removeZenMode();
+        zenModeActive = false;
       }
-    } else if (elementType === "mediaContent") {
-      if (hidden) {
-        startObserving("mediaContent");
-        initializeMediaContent();
-      } else {
-        stopObserving("mediaContent");
-        showElements(SELECTORS.mediaContent);
-      }
-    } else {
-      if (hidden) {
-        startObserving(elementType);
-        hideElements(SELECTORS[elementType]);
-      } else {
-        stopObserving(elementType);
-        showElements(SELECTORS[elementType]);
-      }
+
+      // Show all navbar icons
+      Object.keys(NAVBAR_SELECTORS).forEach((iconType) => {
+        showElements(NAVBAR_SELECTORS[iconType]);
+      });
+
+      Object.values(SELECTORS).forEach((selector) => {
+        showElements(selector);
+      });
     }
-  } else if (request.type === "resetAll") {
-    observers.forEach((observer, type) => {
-      stopObserving(type);
-    });
-
-    if (zenModeActive) {
-      removeZenMode();
-      zenModeActive = false;
-    }
-
-    // Show all navbar icons
-    Object.keys(NAVBAR_SELECTORS).forEach((iconType) => {
-      showElements(NAVBAR_SELECTORS[iconType]);
-    });
-
-    Object.values(SELECTORS).forEach((selector) => {
-      showElements(selector);
+  } catch (error) {
+    console.error("Extension error:", error);
+    chrome.runtime.sendMessage({
+      type: "ERROR",
+      details: {
+        message: error.message,
+        stack: error.stack,
+      },
     });
   }
 });
