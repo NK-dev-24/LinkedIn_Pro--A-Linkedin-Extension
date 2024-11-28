@@ -41,7 +41,7 @@ body.dark {
   content: attr(data-tooltip);
   border: solid 1px var(--text-muted);
   position: absolute;
-  bottom: 100%;
+  bottom: 100%; 
   left: 50%;
   transform: translateX(-50%) translateY(-8px);
   padding: 6px 8px;
@@ -399,4 +399,17 @@ input:focus + .slider {
   font-size: 10px;
   color: var(--text-muted);
   text-align: center;
+}
+.toggle-label {
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-item {
+  cursor:default;
+}
+
+.info-icon {
+  pointer-events: auto;
+  cursor: default;
 }

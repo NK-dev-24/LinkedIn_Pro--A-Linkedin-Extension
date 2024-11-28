@@ -10,14 +10,6 @@ const CONFIG = {
   },
 };
 
-function enhanceAccessibility() {
-  // Add more descriptive aria-labels
-  elements.powerButton.setAttribute('aria-label', 'Toggle Extension On/Off');
-  elements.themeToggle.setAttribute('aria-label', 'Switch between light and dark mode');
-}
-
-
-
 const FEATURES = [
   "extensionEnabled",
   "homeFeed",
@@ -50,33 +42,34 @@ const elements = {
   sections: document.querySelectorAll(".section"),
 };
 
+function enhanceAccessibility() {
+  elements.powerButton.setAttribute("aria-label", "Toggle Extension On/Off");
+  elements.themeToggle.setAttribute(
+    "aria-label",
+    "Switch between light and dark mode"
+  );
+}
+
 // Initialize navbar toggle buttons with proper state persistence
 function initializeNavbarToggles() {
   NAVBAR_FEATURES.forEach((feature) => {
     const button = document.getElementById(feature);
     if (button) {
-      // Load saved state
       chrome.storage.sync.get(feature + "Hidden", (result) => {
         const isHidden = result[feature + "Hidden"] === true;
         button.classList.toggle("active", isHidden);
-
-        // Ensure the visual state matches the stored state
         if (isHidden) {
           button.setAttribute("aria-pressed", "true");
         }
       });
 
-      // Add click handler
       button.addEventListener("click", () => {
         const isHidden = button.classList.toggle("active");
         button.setAttribute("aria-pressed", isHidden.toString());
-
-        // Save state
         chrome.storage.sync.set({
           [feature + "Hidden"]: isHidden,
         });
 
-        // Send message to content script
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
           if (tabs[0]?.id) {
             chrome.tabs.sendMessage(tabs[0].id, {
@@ -94,27 +87,17 @@ function initializeNavbarToggles() {
 // Feature Management
 function loadSavedSettings() {
   chrome.storage.sync.get(null, (settings) => {
-    // Load feature toggles
     FEATURES.forEach((feature) => {
       const element = document.getElementById(feature);
       if (element) {
         const isEnabled = settings[`${feature}Hidden`] === true;
         element.checked = isEnabled;
-
-        // Ensure the element's state is visually correct
-        if (element.type === "checkbox") {
-          element.checked = isEnabled;
-        } else {
-          element.classList.toggle("active", isEnabled);
-        }
       }
     });
 
-    // Handle extension power state
     const extensionEnabled = settings.extensionEnabledHidden !== false;
     updatePowerState(extensionEnabled);
 
-    // Ensure visual states are consistent
     elements.sections.forEach((section) => {
       const toggles = section.querySelectorAll(
         '.toggle-button, input[type="checkbox"]'
@@ -122,7 +105,6 @@ function loadSavedSettings() {
       toggles.forEach((toggle) => {
         const featureId = toggle.id;
         const isEnabled = settings[`${featureId}Hidden`] === true;
-
         if (toggle.type === "checkbox") {
           toggle.checked = isEnabled;
         } else {
@@ -140,19 +122,16 @@ function updatePowerState(isEnabled) {
     section.classList.toggle("disabled", !isEnabled);
   });
 
-  // Save power state
   chrome.storage.sync.set({
     extensionEnabledHidden: isEnabled,
   });
 }
 
 function toggleFeature(feature, enabled) {
-  // Save state immediately
   chrome.storage.sync.set({
     [`${feature}Hidden`]: enabled,
   });
 
-  // Update content script
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const activeTab = tabs[0];
     if (activeTab?.id) {
@@ -167,21 +146,33 @@ function toggleFeature(feature, enabled) {
 
 // Event Listeners
 function initializeEventListeners() {
-  // Feature toggles
+  // Feature toggles with label click support
   FEATURES.forEach((feature) => {
     const element = document.getElementById(feature);
     if (element) {
-      element.addEventListener("change", (e) => {
-        const isEnabled =
-          e.target.type === "checkbox"
-            ? e.target.checked
-            : e.target.classList.contains("active");
-        toggleFeature(feature, isEnabled);
-      });
+      // Find the parent toggle-item
+      const toggleItem = element.closest(".toggle-item");
+      if (toggleItem) {
+        const label = toggleItem.querySelector(".toggle-label");
+
+        // Add click handler to the label
+        label.addEventListener("click", (e) => {
+          // Prevent default if clicking on the info icon
+          if (e.target.classList.contains("info-icon")) {
+            return;
+          }
+          element.checked = !element.checked;
+          toggleFeature(feature, element.checked);
+        });
+
+        // Add click handler to the checkbox
+        element.addEventListener("change", (e) => {
+          toggleFeature(feature, e.target.checked);
+        });
+      }
     }
   });
 
-  // Power button
   elements.powerButton.addEventListener("click", () => {
     const isEnabled = !elements.powerButton.classList.contains("inactive");
     updatePowerState(!isEnabled);
@@ -196,16 +187,14 @@ function initializeEventListeners() {
     });
   });
 
-  // Theme toggle
   elements.themeToggle.addEventListener("click", toggleTheme);
 
-  // Footer buttons
   elements.feedbackBtn.addEventListener("click", () => {
-    window.open(FORM, "_blank");
+    window.open(CONFIG.FEEDBACK_FORM, "_blank");
   });
 
   elements.githubBtn.addEventListener("click", () => {
-    window.open(GITHUB_REPO, "_blank");
+    window.open(CONFIG.GITHUB_REPO, "_blank");
   });
 }
 
@@ -238,4 +227,5 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSavedSettings();
   initializeNavbarToggles();
   initializeEventListeners();
+  enhanceAccessibility();
 });
