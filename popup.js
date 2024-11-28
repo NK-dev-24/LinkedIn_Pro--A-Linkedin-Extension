@@ -1,10 +1,22 @@
 // Constants
-const GITHUB_REPO =
-  "https://github.com/NK-dev-24/Li-Focus---A-Linkedin-Extension";
-const FORM =
-  "https://docs.google.com/forms/d/e/1FAIpQLSevtYtDfXoiUBfl4NM6Ryb8Lfehmv0MYKaNaMHmDBUW_z5Afw/viewform?usp=sf_link";
+const CONFIG = {
+  VERSION: "1.0.0",
+  GITHUB_REPO: "https://github.com/NK-dev-24/Li-Focus---A-Linkedin-Extension",
+  FEEDBACK_FORM:
+    "https://docs.google.com/forms/d/e/1FAIpQLSevtYtDfXoiUBfl4NM6Ryb8Lfehmv0MYKaNaMHmDBUW_z5Afw/viewform?usp=sf_link",
+  DEFAULT_SETTINGS: {
+    extensionEnabled: true,
+    darkMode: true,
+  },
+};
 
-const EXTENSION_VERSION = '1.0.0';
+function enhanceAccessibility() {
+  // Add more descriptive aria-labels
+  elements.powerButton.setAttribute('aria-label', 'Toggle Extension On/Off');
+  elements.themeToggle.setAttribute('aria-label', 'Switch between light and dark mode');
+}
+
+
 
 const FEATURES = [
   "extensionEnabled",
