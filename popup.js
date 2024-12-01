@@ -14,12 +14,13 @@ const FEATURES = [
   "extensionEnabled",
   "homeFeed",
   "mediaContent",
-  "promotedAndAds",
+  // "promotedAndAds",
   "notificationCount",
   "messagingSection",
   "rightSidebar",
   "leftSidebar",
   "zenMode",
+  // "engagementSection",
 ];
 
 const NAVBAR_FEATURES = [

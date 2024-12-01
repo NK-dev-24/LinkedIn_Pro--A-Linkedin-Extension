@@ -22,12 +22,14 @@ const SELECTORS = {
   messagingSection: ".msg-overlay-list-bubble",
   globalNav: "#global-nav",
   zenModeExclude: ".share-box-feed-entry__content",
+  /*
   promotedAndAds: `
     .ad-banner-container,
     a[class*="update-components"][class*="sub-description-link"][aria-label="Promoted"],
     div[class*="feed-shared-update-v2"]:has(a[aria-label="Promoted"]),
     .update-components-actor__description:has(a[aria-label="Promoted"])
   `,
+  */
   mediaContent: `
     /* Articles with images */
     .update-components-article,
@@ -66,6 +68,11 @@ const SELECTORS = {
     div[class*="feed-shared"][class*="image"],
     div[class*="feed-shared"][class*="video"],
     div[class*="feed-shared"][class*="document"]
+  `,
+  engagementSection: `
+    .social-details-social-counts,
+    .display-flex.flex-wrap:has(.social-details-social-countsitem),
+    ul[class*="display-flex flex-wrap"]:has(.social-details-social-countsitem)
   `,
 };
 
