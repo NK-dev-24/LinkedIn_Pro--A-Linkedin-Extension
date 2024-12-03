@@ -1,0 +1,232 @@
+.li-focus-format-buttons {
+  display: flex;
+  gap: 8px;
+  margin-right: 12px;
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--background-secondary, #f3f2ef);
+  padding: 6px 8px;
+  border-radius: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.li-focus-format-btn {
+  position: relative;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 16px;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+/* Style for Underline button */
+.li-focus-format-btn[data-format="underline"] {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.li-focus-format-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.li-focus-format-btn.active {
+  background: rgba(10, 102, 194, 0.08);
+  color: #0a66c2;
+  transform: scale(0.95);
+  transition: all 0.1s ease;
+}
+
+.share-creation-state__footer {
+  position: relative;
+}
+
+/* Symbols button and panel styles */
+.li-focus-format-btn[data-format="symbols"] {
+  position: relative;
+}
+
+.li-focus-symbols-panel {
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--background-secondary, #f3f2ef);
+  border-radius: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: 6px 8px;
+  display: flex;
+  gap: 4px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  height: 44px;
+  align-items: center;
+}
+
+.li-focus-symbols-panel.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.li-focus-symbol-btn {
+  min-width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.li-focus-symbol-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* Custom tooltip styles */
+.li-focus-tooltip {
+  position: absolute;
+  background: var(--tooltip-bg, #27272a);
+  color: var(--tooltip-color, #ffffff);
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: "IBM Plex Mono", monospace;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1001;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border-color, #3f3f46);
+  letter-spacing: 0.5px;
+}
+
+.li-focus-tooltip::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 4px solid transparent;
+}
+
+/* Position variants for tooltip */
+.li-focus-tooltip.top {
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.li-focus-tooltip.top::before {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top-color: var(--tooltip-bg, #27272a);
+}
+
+.li-focus-tooltip.bottom {
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.li-focus-tooltip.bottom::before {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-color: var(--tooltip-bg, #27272a);
+}
+
+/* Show tooltip on hover */
+.li-focus-format-btn:hover .li-focus-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .li-focus-format-buttons {
+    background: var(--background-secondary, #1d2226);
+  }
+
+  .li-focus-format-btn {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .li-focus-format-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .li-focus-format-btn.active {
+    background: rgba(10, 102, 194, 0.15);
+    color: #0a66c2;
+    transform: scale(0.95);
+  }
+
+  .li-focus-symbols-panel {
+    background: var(--background-secondary, #1d2226);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .li-focus-symbol-btn {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .li-focus-symbol-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .li-focus-tooltip {
+    background: var(--tooltip-bg, #3f3f46);
+    border-color: var(--border-color, #52525b);
+  }
+
+  .li-focus-tooltip.top::before {
+    border-top-color: var(--tooltip-bg, #3f3f46);
+  }
+
+  .li-focus-tooltip.bottom::before {
+    border-bottom-color: var(--tooltip-bg, #3f3f46);
+  }
+}
+
+.li-focus-format-btn.disabled {
+  animation: shake 0.4s ease-in-out;
+  cursor: not-allowed;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* Add this in the dark mode section */
+@media (prefers-color-scheme: dark) {
+  .li-focus-format-btn.disabled {
+    opacity: 0.5;
+  }
+} 

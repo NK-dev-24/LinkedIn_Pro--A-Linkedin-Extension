@@ -185,6 +185,12 @@ function applyZenMode() {
   hideElements(excludeSelectors);
   hideElements(SELECTORS.globalNav);
 
+  // Remove any existing zen mode styles first
+  const existingStyle = document.getElementById("zen-mode-styles");
+  if (existingStyle) {
+    existingStyle.remove();
+  }
+
   // Hide the "What do you want to talk about?" popup
   const style = document.createElement("style");
   style.id = "zen-mode-styles";
@@ -332,24 +338,25 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Apply saved settings on page load
 chrome.storage.sync.get(null, (settings) => {
   if (settings.extensionEnabledHidden !== false) {
+    // Apply Zen Mode first if it's enabled
+    if (settings.zenModeHidden === true) {
+      zenModeActive = true;
+      applyZenMode();
+      startObserving("zenMode");
+    }
+
+    // Then apply other settings
     Object.keys(settings).forEach((key) => {
-      if (key.endsWith("Hidden") && settings[key] === true) {
+      if (key.endsWith("Hidden") && settings[key] === true && key !== "zenModeHidden") {
         const elementType = key.replace("Hidden", "");
 
         // Handle navbar icons
         if (NAVBAR_SELECTORS[elementType]) {
           toggleNavbarIcon(elementType, true);
         } else if (SELECTORS[elementType]) {
-          if (elementType === "zenMode") {
-            zenModeActive = true;
-            startObserving("zenMode");
-            applyZenMode();
-          } else if (elementType === "mediaContent") {
+          if (elementType === "mediaContent") {
             startObserving("mediaContent");
             initializeMediaContent();
-          } else if (elementType === "promotedPosts") {
-            startObserving("promotedPosts");
-            hideElements(SELECTORS.promotedPosts);
           } else {
             startObserving(elementType);
             hideElements(SELECTORS[elementType]);

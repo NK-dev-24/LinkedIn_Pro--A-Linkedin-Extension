@@ -20,7 +20,6 @@ const FEATURES = [
   "rightSidebar",
   "leftSidebar",
   "zenMode",
-  // "engagementSection",
 ];
 
 const NAVBAR_FEATURES = [
@@ -41,6 +40,7 @@ const elements = {
   feedbackBtn: document.getElementById("feedbackBtn"),
   githubBtn: document.getElementById("githubBtn"),
   sections: document.querySelectorAll(".section"),
+  resetButton: document.getElementById("resetButton"),
 };
 
 function enhanceAccessibility() {
@@ -72,12 +72,20 @@ function initializeNavbarToggles() {
         });
 
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-          if (tabs[0]?.id) {
-            chrome.tabs.sendMessage(tabs[0].id, {
-              type: "toggleElement",
-              elementType: feature,
-              hidden: isHidden,
-            });
+          const activeTab = tabs[0];
+          if (activeTab?.id && activeTab.url?.includes("linkedin.com")) {
+            chrome.tabs
+              .sendMessage(activeTab.id, {
+                type: "toggleElement",
+                elementType: feature,
+                hidden: isHidden,
+              })
+              .catch(() => {
+                // Ignore connection error
+                console.log(
+                  "Not on LinkedIn page or content script not loaded"
+                );
+              });
           }
         });
       });
@@ -135,12 +143,17 @@ function toggleFeature(feature, enabled) {
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const activeTab = tabs[0];
-    if (activeTab?.id) {
-      chrome.tabs.sendMessage(activeTab.id, {
-        type: "toggleElement",
-        elementType: feature,
-        hidden: enabled,
-      });
+    if (activeTab?.id && activeTab.url?.includes("linkedin.com")) {
+      chrome.tabs
+        .sendMessage(activeTab.id, {
+          type: "toggleElement",
+          elementType: feature,
+          hidden: enabled,
+        })
+        .catch(() => {
+          // Ignore connection error
+          console.log("Not on LinkedIn page or content script not loaded");
+        });
     }
   });
 }
@@ -180,10 +193,15 @@ function initializeEventListeners() {
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const activeTab = tabs[0];
-      if (activeTab?.id) {
-        chrome.tabs.sendMessage(activeTab.id, {
-          type: !isEnabled ? "enableExtension" : "resetAll",
-        });
+      if (activeTab?.id && activeTab.url?.includes("linkedin.com")) {
+        chrome.tabs
+          .sendMessage(activeTab.id, {
+            type: !isEnabled ? "enableExtension" : "resetAll",
+          })
+          .catch(() => {
+            // Ignore connection error
+            console.log("Not on LinkedIn page or content script not loaded");
+          });
       }
     });
   });
@@ -196,6 +214,10 @@ function initializeEventListeners() {
 
   elements.githubBtn.addEventListener("click", () => {
     window.open(CONFIG.GITHUB_REPO, "_blank");
+  });
+
+  elements.resetButton.addEventListener("click", () => {
+    resetAllSettings();
   });
 }
 
@@ -224,9 +246,51 @@ function updateThemeToggleIcon(isDark) {
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
+  // Initialize core functionality
   initializeTheme();
   loadSavedSettings();
   initializeNavbarToggles();
   initializeEventListeners();
   enhanceAccessibility();
 });
+
+function resetAllSettings() {
+  // Reset all feature toggles
+  FEATURES.forEach((feature) => {
+    const element = document.getElementById(feature);
+    if (element) {
+      element.checked = false;
+      toggleFeature(feature, false);
+    }
+  });
+
+  // Reset all navbar toggles
+  NAVBAR_FEATURES.forEach((feature) => {
+    const button = document.getElementById(feature);
+    if (button) {
+      button.classList.remove("active");
+      button.setAttribute("aria-pressed", "false");
+      chrome.storage.sync.set({
+        [feature + "Hidden"]: false,
+      });
+    }
+  });
+
+  // Enable extension if disabled
+  updatePowerState(true);
+
+  // Send reset message to content script only if we're on a LinkedIn page
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    const activeTab = tabs[0];
+    if (activeTab?.id && activeTab.url?.includes("linkedin.com")) {
+      chrome.tabs
+        .sendMessage(activeTab.id, {
+          type: "resetAll",
+        })
+        .catch(() => {
+          // Ignore connection error - this means we're not on a LinkedIn page
+          console.log("Not on LinkedIn page or content script not loaded");
+        });
+    }
+  });
+}

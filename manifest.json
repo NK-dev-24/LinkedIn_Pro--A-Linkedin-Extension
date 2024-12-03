@@ -6,7 +6,8 @@
   "author": "NK",
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "scripting"
   ],
   "commands": {
     "toggle-zen-mode": {
@@ -42,8 +43,8 @@
   "content_scripts": [
     {
       "matches": ["*://www.linkedin.com/*"],
-      "js": [ "content.js"],
-      "css": ["styles.css"],
+      "js": [ "content.js", "content-formatter.js"],
+      "css": ["styles/styles.css", "styles/formatter.css"],
       "run_at": "document_end"
     }
   ],
