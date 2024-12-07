@@ -2,14 +2,13 @@ const formatter = {
   symbols: [
     { symbol: "○", label: "Hollow circle" },
     { symbol: "●", label: "Large solid dot" },
+    { symbol: "•", label: "Small solid dot" },
     { symbol: "■", label: "Black square" },
     { symbol: "▪", label: "Small black square" },
-    { symbol: "◆", label: "Diamond" },
-    { symbol: "▸", label: "Small right-pointing triangle" },
     { symbol: "✦", label: "Star bullet" },
     { symbol: "➤", label: "Right-pointing triangle" },
     { symbol: "→", label: "Arrow" },
-    { symbol: "•", label: "Small solid dot" },
+    { symbol: "➡️", label: "Right arrow with blue BG" },
   ],
 
   init() {
@@ -17,6 +16,7 @@ const formatter = {
     this.setupMutationObserver();
     this.setupClickOutsideHandler();
     this.setupKeyboardShortcuts();
+    this.injectCharacterCounter();
   },
 
   setupKeyboardShortcuts() {
@@ -60,6 +60,8 @@ const formatter = {
       { format: "bold", label: "B", tooltip: "Bold (Ctrl+B)" },
       { format: "italic", label: "I", tooltip: "Italic (Ctrl+I)" },
       { format: "underline", label: "U", tooltip: "Underline (Ctrl+U)" },
+      { format: "bullet-list", label: "⋮≡", tooltip: "Bullet List" },
+      { format: "number-list", label: "123", tooltip: "Numbered List" },
       { format: "symbols", label: "S >", tooltip: "Insert Symbol" },
     ];
 
@@ -154,6 +156,7 @@ const formatter = {
       mutations.forEach((mutation) => {
         if (mutation.addedNodes.length) {
           this.injectFormatButtons();
+          this.injectCharacterCounter();
         }
       });
     });
@@ -171,9 +174,8 @@ const formatter = {
     const range = selection.getRangeAt(0);
     const selectedText = range.toString();
 
-    // Return if no text is selected or text is already formatted
-    if (!selectedText || this.isTextAlreadyFormatted(selectedText)) {
-      // Optional: Show some visual feedback that formatting isn't allowed
+    // Skip empty selection
+    if (!selectedText) {
       const button = document.querySelector(
         `.li-focus-format-btn[data-format="${format}"]`
       );
@@ -186,24 +188,75 @@ const formatter = {
       return;
     }
 
-    let formattedText;
+    let formattedContent;
     switch (format) {
       case "bold":
-        formattedText = this.formatBold(selectedText);
-        break;
       case "italic":
-        formattedText = this.formatItalic(selectedText);
-        break;
       case "underline":
-        formattedText = this.formatUnderline(selectedText);
+        if (this.isTextAlreadyFormatted(selectedText)) return;
+
+        // Create a container for the selected content
+        const container = document.createElement("div");
+        container.appendChild(range.cloneContents());
+
+        // Process text nodes only
+        const walker = document.createTreeWalker(
+          container,
+          NodeFilter.SHOW_TEXT,
+          null,
+          false
+        );
+
+        const nodes = [];
+        let node;
+        while ((node = walker.nextNode())) {
+          nodes.push(node);
+        }
+
+        nodes.forEach((textNode) => {
+          const text = textNode.textContent;
+          let formattedText;
+          switch (format) {
+            case "bold":
+              formattedText = this.formatBold(text);
+              break;
+            case "italic":
+              formattedText = this.formatItalic(text);
+              break;
+            case "underline":
+              formattedText = this.formatUnderline(text);
+              break;
+          }
+          textNode.textContent = formattedText;
+        });
+
+        formattedContent = container.innerHTML;
+        break;
+
+      case "bullet-list":
+      case "number-list":
+        formattedContent =
+          format === "bullet-list"
+            ? this.formatBulletList(selectedText)
+            : this.formatNumberList(selectedText);
         break;
       default:
         return;
     }
 
-    const textNode = document.createTextNode(formattedText);
+    // Insert the formatted content
     range.deleteContents();
-    range.insertNode(textNode);
+    const temp = document.createElement("div");
+    temp.innerHTML = formattedContent;
+    const fragment = document.createDocumentFragment();
+    while (temp.firstChild) {
+      fragment.appendChild(temp.firstChild);
+    }
+    range.insertNode(fragment);
+
+    // Restore selection
+    selection.removeAllRanges();
+    selection.addRange(range);
 
     // Update visual state of format buttons
     this.updateFormatButtonStates(format);
@@ -359,6 +412,149 @@ const formatter = {
     const underlineTest = /\u0332/.test(text); // Underline combining character
 
     return boldTest || italicTest || underlineTest;
+  },
+
+  formatBulletList(text) {
+    const div = document.createElement("div");
+    div.innerHTML = this.getEditorHtml();
+
+    // Process each paragraph
+    const paragraphs = div.getElementsByTagName("p");
+    let hasAnyBullet = false;
+    let allBullets = true;
+
+    // First check if all selected paragraphs have bullets
+    Array.from(paragraphs).forEach((p) => {
+      const text = p.textContent.trim();
+      if (text) {
+        if (text.startsWith("•")) {
+          hasAnyBullet = true;
+        } else {
+          allBullets = false;
+        }
+      }
+    });
+
+    // If all paragraphs have bullets, remove them. Otherwise, add bullets
+    Array.from(paragraphs).forEach((p) => {
+      const text = p.textContent.trim();
+      if (text) {
+        if (allBullets) {
+          // Remove bullet
+          p.textContent = text.replace(/^• /, "");
+        } else {
+          // Add bullet, but first remove any existing numbered list format
+          const cleanText = text.replace(/^\d+\. /, "").replace(/^• /, "");
+          p.textContent = `• ${cleanText}`;
+        }
+      }
+    });
+
+    return div.innerHTML;
+  },
+
+  formatNumberList(text) {
+    const div = document.createElement("div");
+    div.innerHTML = this.getEditorHtml();
+
+    // Process each paragraph
+    const paragraphs = div.getElementsByTagName("p");
+    let hasAnyNumber = false;
+    let allNumbers = true;
+
+    // First check if all selected paragraphs have numbers
+    Array.from(paragraphs).forEach((p) => {
+      const text = p.textContent.trim();
+      if (text) {
+        if (text.match(/^\d+\./)) {
+          hasAnyNumber = true;
+        } else {
+          allNumbers = false;
+        }
+      }
+    });
+
+    // If all paragraphs have numbers, remove them. Otherwise, add numbers
+    let counter = 1;
+    Array.from(paragraphs).forEach((p) => {
+      const text = p.textContent.trim();
+      if (text) {
+        if (allNumbers) {
+          // Remove number
+          p.textContent = text.replace(/^\d+\. /, "");
+        } else {
+          // Add number, but first remove any existing bullet format
+          const cleanText = text.replace(/^• /, "").replace(/^\d+\. /, "");
+          p.textContent = `${counter++}. ${cleanText}`;
+        }
+      }
+    });
+
+    return div.innerHTML;
+  },
+
+  // Helper function to get editor HTML
+  getEditorHtml() {
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const fragment = range.cloneContents();
+    const div = document.createElement("div");
+    div.appendChild(fragment);
+    return div.innerHTML;
+  },
+
+  injectCharacterCounter() {
+    // Check if counter already exists
+    if (document.querySelector(".character-counter")) return;
+
+    const editor = document.querySelector(".ql-editor");
+    if (!editor) return;
+
+    // Create counter element
+    const counter = document.createElement("div");
+    counter.className = "character-counter";
+    counter.innerHTML = `<span class="current-chars">0</span>/<span class="max-chars">3000</span>`;
+
+    // Find the wrapper element and append counter
+    const wrapper = document.querySelector(
+      ".share-creation-state__msg-wrapper"
+    );
+    if (wrapper) {
+      wrapper.appendChild(counter);
+    }
+
+    // Update counter function
+    const updateCounter = () => {
+      const length = editor.textContent.length;
+      const currentChars = counter.querySelector(".current-chars");
+      currentChars.textContent = length;
+
+      // Update counter colors based on length
+      if (length > 2700 && length <= 3000) {
+        counter.classList.add("near-limit");
+        counter.classList.remove("at-limit");
+      } else if (length > 3000) {
+        counter.classList.add("at-limit");
+        counter.classList.remove("near-limit");
+      } else {
+        counter.classList.remove("near-limit", "at-limit");
+      }
+    };
+
+    // Add multiple event listeners to catch all text changes
+    editor.addEventListener("input", updateCounter);
+    editor.addEventListener("paste", updateCounter);
+
+    // Use MutationObserver to catch programmatic changes (like clearing)
+    const textObserver = new MutationObserver(updateCounter);
+    textObserver.observe(editor, {
+      childList: true,
+      characterData: true,
+      subtree: true,
+    });
+
+    // Initial counter update
+    updateCounter();
   },
 };
 
