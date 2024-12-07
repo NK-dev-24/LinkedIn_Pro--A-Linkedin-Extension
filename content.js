@@ -347,7 +347,11 @@ chrome.storage.sync.get(null, (settings) => {
 
     // Then apply other settings
     Object.keys(settings).forEach((key) => {
-      if (key.endsWith("Hidden") && settings[key] === true && key !== "zenModeHidden") {
+      if (
+        key.endsWith("Hidden") &&
+        settings[key] === true &&
+        key !== "zenModeHidden"
+      ) {
         const elementType = key.replace("Hidden", "");
 
         // Handle navbar icons
