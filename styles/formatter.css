@@ -229,4 +229,145 @@
   .li-focus-format-btn.disabled {
     opacity: 0.5;
   }
+}
+
+/* Add these styles for the list buttons */
+.li-focus-format-btn[data-format="bullet-list"] {
+  font-size: 14px;
+  letter-spacing: -2px;
+  font-weight: 600;
+  padding-top: 1px;
+}
+
+.li-focus-format-btn[data-format="number-list"] {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto;
+}
+
+/* Add these to the dark mode section */
+@media (prefers-color-scheme: dark) {
+  .li-focus-format-btn[data-format="bullet-list"],
+  .li-focus-format-btn[data-format="number-list"] {
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Character Counter Styles */
+.character-counter {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto;
+  z-index: 100;
+  background: transparent;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.character-counter.near-limit {
+  color: #f59e0b;
+}
+
+.character-counter.at-limit {
+  color: #dc2626;
+}
+
+/* Ensure the counter doesn't overlap with other elements */
+.share-creation-state__msg-wrapper {
+  position: relative;
+}
+/* Industrial Design-inspired Scrollbar for the editor */
+.share-creation-state__msg-wrapper ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.share-creation-state__msg-wrapper ::-webkit-scrollbar-track {
+  background: transparent;
+  border-left: 2px dashed rgba(0, 0, 0, 0.1);
+  margin: 4px;
+}
+
+.share-creation-state__msg-wrapper ::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 0;
+  border: 3px solid var(--bg-light);
+  background-clip: padding-box;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.share-creation-state__msg-wrapper ::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+  background-clip: padding-box;
+  opacity: 1;
+}
+
+.share-creation-state__msg-wrapper ::-webkit-scrollbar-button {
+  display: block;
+  height: 8px;
+  width: 8px;
+  background-color: var(--toggle-off);
+  border: 2px solid var(--bg-light);
+  background-clip: padding-box;
+  opacity: 0.8;
+}
+
+.share-creation-state__msg-wrapper ::-webkit-scrollbar-button:hover {
+  background-color: var(--text-muted);
+  opacity: 1;
+}
+
+.share-creation-state__msg-wrapper ::-webkit-scrollbar-button:vertical:start:decrement {
+  border-radius: 4px 4px 0 0;
+}
+
+.share-creation-state__msg-wrapper ::-webkit-scrollbar-button:vertical:end:increment {
+  border-radius: 0 0 4px 4px;
+}
+
+.share-creation-state__msg-wrapper ::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox Scrollbar for the editor */
+.share-creation-state__msg-wrapper * {
+  scrollbar-width: auto;
+  scrollbar-color: var(--primary) transparent;
+}
+
+/* Dark Mode Scrollbar */
+@media (prefers-color-scheme: dark) {
+  .share-creation-state__msg-wrapper ::-webkit-scrollbar-track {
+    border-left: 2px dashed rgba(255, 255, 255, 0.1);
+  }
+
+  .share-creation-state__msg-wrapper ::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    opacity: 0.7;
+    border-color: var(--bg-dark);
+  }
+
+  .share-creation-state__msg-wrapper ::-webkit-scrollbar-button {
+    background-color: var(--toggle-off-dark);
+    border-color: var(--bg-dark);
+  }
+
+  .share-creation-state__msg-wrapper ::-webkit-scrollbar-button:hover {
+    background-color: var(--text-muted);
+  }
+
+  .share-creation-state__msg-wrapper ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+    opacity: 1;
+  }
+
+  .share-creation-state__msg-wrapper * {
+    scrollbar-color: var(--primary) transparent;
+  }
 } 
