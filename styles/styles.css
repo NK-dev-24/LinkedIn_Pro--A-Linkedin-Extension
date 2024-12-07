@@ -446,6 +446,12 @@ input:focus + .slider {
   cursor: default;
 }
 
+/* Disabled state for undo/redo buttons */
+.format-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .reset-section {
   text-align: center;
   padding: 12px !important;
@@ -466,7 +472,7 @@ input:focus + .slider {
   color: white !important;
 }
 
-/* Scrollbar */
+/* Industrial Design-inspired Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
