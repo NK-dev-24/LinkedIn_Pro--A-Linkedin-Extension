@@ -13,8 +13,7 @@ const CONFIG = {
 const FEATURES = [
   "extensionEnabled",
   "homeFeed",
-  "mediaContent",
-  // "promotedAndAds",
+  // "mediaContent",
   "notificationCount",
   "messagingSection",
   "rightSidebar",

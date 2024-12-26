@@ -30,45 +30,45 @@ const SELECTORS = {
     .update-components-actor__description:has(a[aria-label="Promoted"])
   `,
   */
-  mediaContent: `
-    /* Articles with images */
-    .update-components-article,
-    .update-components-article__image-link,
-    .update-components-article--with-large-image,
-    .update-components-article__description-container,
-    
-    /* Videos */
-    .ember-view.video-js,
-    [data-vjs-player],
-    .vjs-tech,
-    .media-player__player,
-    .video-main-container,
-    
-    /* Documents/Carousel */
-    .update-components-document__container,
-    .document-s-container,
-    .carousel-container,
-    
-    /* General media containers */
-    .feed-shared-update-v2__content img,
-    .feed-shared-update-v2__content video,
-    .feed-shared-image__container,
-    .feed-shared-video__container,
-    .feed-shared-linkedin-video__container,
-    .feed-shared-external-video__container,
-    .feed-shared-carousel__content,
-    .feed-shared-article__preview-container,
-    .update-components-image,
-    .video-container,
-    
-    /* Additional containers */
-    .feed-shared-update-v2__content .update-components-image,
-    .feed-shared-update-v2__content .update-components-video,
-    .feed-shared-update-v2__content .update-components-document,
-    div[class*="feed-shared"][class*="image"],
-    div[class*="feed-shared"][class*="video"],
-    div[class*="feed-shared"][class*="document"]
-  `,
+  // mediaContent: `
+  //   /* Articles with images */
+  //   .update-components-article,
+  //   .update-components-article__image-link,
+  //   .update-components-article--with-large-image,
+  //   .update-components-article__description-container,
+  //   
+  //   /* Videos */
+  //   .ember-view.video-js,
+  //   [data-vjs-player],
+  //   .vjs-tech,
+  //   .media-player__player,
+  //   .video-main-container,
+  //   
+  //   /* Documents/Carousel */
+  //   .update-components-document__container,
+  //   .document-s-container,
+  //   .carousel-container,
+  //   
+  //   /* General media containers */
+  //   .feed-shared-update-v2__content img,
+  //   .feed-shared-update-v2__content video,
+  //   .feed-shared-image__container,
+  //   .feed-shared-video__container,
+  //   .feed-shared-linkedin-video__container,
+  //   .feed-shared-external-video__container,
+  //   .feed-shared-carousel__content,
+  //   .feed-shared-article__preview-container,
+  //   .update-components-image,
+  //   .video-container,
+  //   
+  //   /* Additional containers */
+  //   .feed-shared-update-v2__content .update-components-image,
+  //   .feed-shared-update-v2__content .update-components-video,
+  //   .feed-shared-update-v2__content .update-components-document,
+  //   div[class*="feed-shared"][class*="image"],
+  //   div[class*="feed-shared"][class*="video"],
+  //   div[class*="feed-shared"][class*="document"]
+  // `,
   engagementSection: `
     .social-details-social-counts,
     .display-flex.flex-wrap:has(.social-details-social-countsitem),
@@ -126,54 +126,54 @@ function toggleNavbarIcon(iconType, hidden) {
 }
 
 // Function to handle media content
-function handleMediaContent(mutations) {
-  mutations.forEach((mutation) => {
-    mutation.addedNodes.forEach((node) => {
-      if (node.nodeType === 1) {
-        // Find and hide all media elements
-        const mediaElements = node.querySelectorAll(SELECTORS.mediaContent);
-        mediaElements.forEach((element) => {
-          element.style.display = "none";
+// function handleMediaContent(mutations) {
+//   mutations.forEach((mutation) => {
+//     mutation.addedNodes.forEach((node) => {
+//       if (node.nodeType === 1) {
+//         // Find and hide all media elements
+//         const mediaElements = node.querySelectorAll(SELECTORS.mediaContent);
+//         mediaElements.forEach((element) => {
+//           element.style.display = "none";
 
-          let parent = element.parentElement;
-          while (
-            parent &&
-            !parent.classList.contains("feed-shared-update-v2")
-          ) {
-            if (
-              parent.classList.contains("update-components-article") ||
-              parent.classList.contains("document-s-container") ||
-              parent.classList.contains("video-js") ||
-              parent.classList.contains("update-components-image") ||
-              parent.classList.contains("update-components-video") ||
-              parent.classList.contains("update-components-document")
-            ) {
-              parent.style.display = "none";
-            }
-            parent = parent.parentElement;
-          }
-        });
+//           let parent = element.parentElement;
+//           while (
+//             parent &&
+//             !parent.classList.contains("feed-shared-update-v2")
+//           ) {
+//             if (
+//               parent.classList.contains("update-components-article") ||
+//               parent.classList.contains("document-s-container") ||
+//               parent.classList.contains("video-js") ||
+//               parent.classList.contains("update-components-image") ||
+//               parent.classList.contains("update-components-video") ||
+//               parent.classList.contains("update-components-document")
+//             ) {
+//               parent.style.display = "none";
+//             }
+//             parent = parent.parentElement;
+//           }
+//         });
 
-        const videoPlayers = node.querySelectorAll(
-          "[data-vjs-player], .video-js"
-        );
-        videoPlayers.forEach((player) => {
-          player.style.display = "none";
-          const parentContainer = player.closest(
-            ".feed-shared-update-v2__content"
-          );
-          if (parentContainer) {
-            const mediaWrapper =
-              parentContainer.querySelector(".video-container");
-            if (mediaWrapper) {
-              mediaWrapper.style.display = "none";
-            }
-          }
-        });
-      }
-    });
-  });
-}
+//         const videoPlayers = node.querySelectorAll(
+//           "[data-vjs-player], .video-js"
+//         );
+//         videoPlayers.forEach((player) => {
+//           player.style.display = "none";
+//           const parentContainer = player.closest(
+//             ".feed-shared-update-v2__content"
+//           );
+//           if (parentContainer) {
+//             const mediaWrapper =
+//               parentContainer.querySelector(".video-container");
+//             if (mediaWrapper) {
+//               mediaWrapper.style.display = "none";
+//             }
+//           }
+//         });
+//       }
+//     });
+//   });
+// }
 
 // Function to apply Zen Mode
 function applyZenMode() {
@@ -237,7 +237,7 @@ function startObserving(featureType) {
     if (featureType === "zenMode") {
       applyZenMode();
     } else if (featureType === "mediaContent") {
-      handleMediaContent(mutations);
+      // handleMediaContent(mutations);
       hideElements(SELECTORS.mediaContent);
     } else {
       mutations.forEach(function (mutation) {
@@ -262,9 +262,9 @@ function stopObserving(featureType) {
 }
 
 // Initialize media content hiding
-function initializeMediaContent() {
-  hideElements(SELECTORS.mediaContent);
-}
+// function initializeMediaContent() {
+//   hideElements(SELECTORS.mediaContent);
+// }
 
 // Handle messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -290,7 +290,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       } else if (elementType === "mediaContent") {
         if (hidden) {
           startObserving("mediaContent");
-          initializeMediaContent();
+          // initializeMediaContent();
         } else {
           stopObserving("mediaContent");
           showElements(SELECTORS.mediaContent);
@@ -360,7 +360,7 @@ chrome.storage.sync.get(null, (settings) => {
         } else if (SELECTORS[elementType]) {
           if (elementType === "mediaContent") {
             startObserving("mediaContent");
-            initializeMediaContent();
+            // initializeMediaContent();
           } else {
             startObserving(elementType);
             hideElements(SELECTORS[elementType]);
