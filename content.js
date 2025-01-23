@@ -22,12 +22,13 @@ const SELECTORS = {
   messagingSection: ".msg-overlay-list-bubble",
   globalNav: "#global-nav",
   zenModeExclude: ".share-box-feed-entry__content",
-  promotedAndAds: `
+  // Commenting out promoted and ads selectors to preserve other features
+  /* promotedAndAds: `
     .ad-banner-container,
     a[class*="update-components"][class*="sub-description-link"][aria-label="Promoted"],
     div[class*="feed-shared-update-v2"]:has(a[aria-label="Promoted"]),
     .update-components-actor__description:has(a[aria-label="Promoted"])
-  `,
+  `, */
   mediaContent: `
     /* Articles with images */
     .update-components-article,
@@ -340,9 +341,6 @@ chrome.storage.sync.get(null, (settings) => {
           } else if (elementType === "mediaContent") {
             startObserving("mediaContent");
             initializeMediaContent();
-          } else if (elementType === "promotedPosts") {
-            startObserving("promotedPosts");
-            hideElements(SELECTORS.promotedPosts);
           } else {
             startObserving(elementType);
             hideElements(SELECTORS[elementType]);
