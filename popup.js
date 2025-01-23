@@ -10,7 +10,7 @@ const FEATURES = [
   "extensionEnabled",
   "homeFeed",
   "mediaContent",
-  "promotedAndAds",
+  // "promotedAndAds", // Commented out to preserve other features
   "notificationCount",
   "messagingSection",
   "rightSidebar",
