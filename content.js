@@ -179,7 +179,13 @@ function applyZenMode() {
   hideElements(excludeSelectors);
   hideElements(SELECTORS.globalNav);
 
-  // Hide the "What do you want to talk about?" popup
+  // Remove any existing zen mode styles first
+  const existingStyle = document.getElementById("zen-mode-styles");
+  if (existingStyle) {
+    existingStyle.remove();
+  }
+
+  // Add zen mode styles
   const style = document.createElement("style");
   style.id = "zen-mode-styles";
   style.textContent = `
@@ -323,22 +329,26 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-// Apply saved settings on page load
+// Update the chrome.storage.sync.get section at the bottom of the file
 chrome.storage.sync.get(null, (settings) => {
   if (settings.extensionEnabledHidden !== false) {
+    // First check and apply Zen Mode if enabled
+    if (settings.zenModeHidden === true) {
+      zenModeActive = true;
+      applyZenMode();
+      startObserving("zenMode");
+    }
+
+    // Then handle other settings
     Object.keys(settings).forEach((key) => {
-      if (key.endsWith("Hidden") && settings[key] === true) {
+      if (key.endsWith("Hidden") && settings[key] === true && key !== "zenModeHidden") {
         const elementType = key.replace("Hidden", "");
 
         // Handle navbar icons
         if (NAVBAR_SELECTORS[elementType]) {
           toggleNavbarIcon(elementType, true);
         } else if (SELECTORS[elementType]) {
-          if (elementType === "zenMode") {
-            zenModeActive = true;
-            startObserving("zenMode");
-            applyZenMode();
-          } else if (elementType === "mediaContent") {
+          if (elementType === "mediaContent") {
             startObserving("mediaContent");
             initializeMediaContent();
           } else {
@@ -346,6 +356,19 @@ chrome.storage.sync.get(null, (settings) => {
             hideElements(SELECTORS[elementType]);
           }
         }
+      }
+    });
+  }
+});
+
+// Add a new listener for page visibility changes
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    chrome.storage.sync.get("zenModeHidden", (settings) => {
+      if (settings.zenModeHidden === true && !zenModeActive) {
+        zenModeActive = true;
+        applyZenMode();
+        startObserving("zenMode");
       }
     });
   }

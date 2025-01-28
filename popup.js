@@ -87,13 +87,29 @@ function loadSavedSettings() {
       const element = document.getElementById(feature);
       if (element) {
         const isEnabled = settings[`${feature}Hidden`] === true;
-        element.checked = isEnabled;
-
-        // Ensure the element's state is visually correct
-        if (element.type === "checkbox") {
+        
+        // Special handling for zen mode
+        if (feature === "zenMode") {
           element.checked = isEnabled;
+          if (isEnabled) {
+            // Ensure zen mode is properly applied
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+              if (tabs[0]?.id) {
+                chrome.tabs.sendMessage(tabs[0].id, {
+                  type: "toggleElement",
+                  elementType: "zenMode",
+                  hidden: true
+                });
+              }
+            });
+          }
         } else {
-          element.classList.toggle("active", isEnabled);
+          // Handle other features
+          if (element.type === "checkbox") {
+            element.checked = isEnabled;
+          } else {
+            element.classList.toggle("active", isEnabled);
+          }
         }
       }
     });
