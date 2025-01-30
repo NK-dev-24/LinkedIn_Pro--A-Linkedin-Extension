@@ -332,19 +332,23 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Apply saved settings on page load
 chrome.storage.sync.get(null, (settings) => {
   if (settings.extensionEnabledHidden !== false) {
+    // First check and apply Zen Mode if enabled
+    if (settings.zenModeHidden === true) {
+      zenModeActive = true;
+      applyZenMode();
+      startObserving("zenMode");
+    }
+
+    // Then apply other settings
     Object.keys(settings).forEach((key) => {
-      if (key.endsWith("Hidden") && settings[key] === true) {
+      if (key.endsWith("Hidden") && settings[key] === true && key !== "zenModeHidden") {
         const elementType = key.replace("Hidden", "");
 
         // Handle navbar icons
         if (NAVBAR_SELECTORS[elementType]) {
           toggleNavbarIcon(elementType, true);
         } else if (SELECTORS[elementType]) {
-          if (elementType === "zenMode") {
-            zenModeActive = true;
-            startObserving("zenMode");
-            applyZenMode();
-          } else if (elementType === "mediaContent") {
+          if (elementType === "mediaContent") {
             startObserving("mediaContent");
             initializeMediaContent();
           } else {
@@ -352,6 +356,21 @@ chrome.storage.sync.get(null, (settings) => {
             hideElements(SELECTORS[elementType]);
           }
         }
+      }
+    });
+  }
+});
+
+// Add visibility change listener to ensure Zen Mode persists
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    chrome.storage.sync.get(["zenModeHidden", "extensionEnabledHidden"], (settings) => {
+      if (settings.extensionEnabledHidden !== false && 
+          settings.zenModeHidden === true && 
+          !zenModeActive) {
+        zenModeActive = true;
+        applyZenMode();
+        startObserving("zenMode");
       }
     });
   }
