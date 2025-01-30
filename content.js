@@ -257,6 +257,12 @@ function initializeMediaContent() {
 // Handle messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   try {
+    if (request.type === "enableExtension") {
+      // Just update the internal state when enabling
+      // Individual feature toggles will follow
+      return;
+    }
+    
     if (request.type === "toggleElement") {
       const { elementType, hidden } = request;
 

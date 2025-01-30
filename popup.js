@@ -177,9 +177,32 @@ function initializeEventListeners() {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const activeTab = tabs[0];
       if (activeTab?.id) {
-        chrome.tabs.sendMessage(activeTab.id, {
-          type: !isEnabled ? "enableExtension" : "resetAll",
-        });
+        if (!isEnabled) {
+          // When turning ON, reapply all active features
+          chrome.storage.sync.get(null, (settings) => {
+            // First send the enable message
+            chrome.tabs.sendMessage(activeTab.id, {
+              type: "enableExtension"
+            });
+
+            // Then reapply all active features
+            Object.keys(settings).forEach((key) => {
+              if (key.endsWith("Hidden") && settings[key] === true) {
+                const elementType = key.replace("Hidden", "");
+                chrome.tabs.sendMessage(activeTab.id, {
+                  type: "toggleElement",
+                  elementType: elementType,
+                  hidden: true
+                });
+              }
+            });
+          });
+        } else {
+          // When turning OFF, just reset all
+          chrome.tabs.sendMessage(activeTab.id, {
+            type: "resetAll"
+          });
+        }
       }
     });
   });
